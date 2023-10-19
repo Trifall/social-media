@@ -28,3 +28,15 @@ export const frameworks = sqliteTable(
 		frameworkIdx: index('framework_idx').on(frameworks.name),
 	})
 );
+
+/** POST SCHEMA MARKER - DO NOT REMOVE
+ * export const post = sqliteTable(
+ * post,
+ * {
+ * 	id: integer(id).primaryKey(),
+ *  content: text(content).notNull(),
+ *  media: text(media),
+ *  created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+ *
+ *
+ */
