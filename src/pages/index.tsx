@@ -52,7 +52,7 @@ export default function Home({ frameworks }: HomeProps) {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<main>
+			<main className='bg-inherit'>
 				<div className='mb-32 flex flex-col text-center lg:mb-0 lg:text-left'>
 					<div className='mt-20 overflow-x-auto rounded-lg border border-gray-200 w-[80vw] max-w-2xl'>
 						<table className='w-full divide-y-2 divide-gray-200 text-sm'>
