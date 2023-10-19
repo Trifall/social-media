@@ -1,0 +1,46 @@
+{
+	"name": "next-ts-template",
+	"version": "1.0.0",
+	"description": "Next.js with TypeScript / Husky (Lint-staged) / PM2 / ESLint / Prettier",
+	"private": true,
+	"author": {
+		"name": "Jerren T",
+		"email": "Jerren@trifall.com"
+	},
+	"scripts": {
+		"dev": "next dev",
+		"build": "yarn install && next build",
+		"start": "next start",
+		"lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --cache --fix --ignore-path ./.gitignore",
+		"format": "prettier --ignore-path .gitignore --log-level warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
+		"pipeline": "yarn install && yarn format && yarn lint && next build",
+		"prepare": "husky install"
+	},
+	"license": "GPL-3.0-or-later",
+	"dependencies": {
+		"next": "13.4.9",
+		"react": "18.2.0",
+		"react-dom": "18.2.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.4.1",
+		"@types/react": "^18.2.14",
+		"@types/react-dom": "^18.2.6",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"eslint": "^8.44.0",
+		"eslint-config-next": "^13.4.9",
+		"eslint-config-prettier": "^8.8.0",
+		"husky": ">=6",
+		"lint-staged": ">=10",
+		"prettier": "^3.0.0",
+		"typescript": "^4.9.5"
+	},
+	"lint-staged": {
+		"src/**/*.{js,jsx,ts,tsx}": [
+			"eslint --cache --fix --max-warnings=0",
+			"prettier --write --ignore-unknown"
+		],
+		"src/**/*.{css,scss,md,json}": "prettier --write --ignore-unknown"
+	}
+}
