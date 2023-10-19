@@ -3,7 +3,8 @@
 
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
-import { tursoClient } from '../../../utils/tursoClient';
+import { users } from '../../../../drizzle/schema';
+import { buildDbClient } from '../../../utils/dbClient';
 
 export const authOptions: NextAuthOptions = {
 	// Configure one or more authentication providers
@@ -18,19 +19,34 @@ export const authOptions: NextAuthOptions = {
 		async signIn(user) {
 			const session = user as any;
 			try {
-				const db = await tursoClient();
+				const db = await buildDbClient();
 
-				const user = await db.execute({ sql: 'SELECT * FROM users WHERE id = ?', args: [session.user.id] });
+				const user = await db.query.users.findFirst({
+					where: (users, { eq }) => eq(users.id, session.user.id.toString()),
+				});
 
-				if (user.rows?.length === 0) {
-					const insertUserQuery = {
-						sql: 'INSERT INTO users (id, name, email, profileImage) VALUES (?, ?, ?, ?)',
-						args: [session.user.id.toString(), session.user.name, session.user.email, session.user.image],
-					};
+				if (!user) {
+					// const insertUserQuery = {
+					// 	sql: 'INSERT INTO users (id, name, email, profileImage) VALUES (?, ?, ?, ?)',
+					// 	args: [session.user.id.toString(), session.user.name, session.user.email, session.user.image],
+					// };
 
-					const user = await db.execute(insertUserQuery);
+					await db
+						.insert(users)
+						.values({
+							id: session.user.id.toString(),
+							name: session.user.name,
+							email: session.user.email,
+							profileImage: session.user.image,
+						})
+						.returning()
+						.get();
 
-					if (!user) {
+					const userRecord = await db.query.users.findFirst({
+						where: (users, { eq }) => eq(users.email, session.user.email),
+					});
+
+					if (!userRecord) {
 						return false;
 					}
 

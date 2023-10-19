@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { tursoClient } from '../utils/tursoClient';
+import { buildDbClient } from '../utils/dbClient';
 import { Framework } from './api/add-framework';
 
 type HomeProps = {
@@ -8,8 +8,35 @@ type HomeProps = {
 };
 
 async function getData() {
-	const res = await tursoClient().execute('select * from frameworks;');
-	return res.rows as unknown as Framework[];
+	const db = buildDbClient();
+	const res = await db.query.frameworks.findMany();
+	console.log(`res: ${JSON.stringify(res, null, 2)}`);
+	return res as unknown as Framework[];
+
+	// const mockData: Framework[] = [
+	// 	{
+	// 		id: 1,
+	// 		name: 'React',
+	// 		language: 'JavaScript',
+	// 		url: 'https://github.com/facebook/react',
+	// 		stars: 170000,
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		name: 'Vue',
+	// 		language: 'JavaScript',
+	// 		url: 'https://github.com/vuejs/vue',
+	// 		stars: 180000,
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		name: 'Angular',
+	// 		language: 'TypeScript',
+	// 		url: 'https://github.com/angular/angular',
+	// 		stars: 70000,
+	// 	},
+	// ];
+	// return mockData;
 }
 
 export default function Home({ frameworks }: HomeProps) {

@@ -1,4 +1,3 @@
-import { tursoClient } from '@/utils/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 
 export interface Framework {
@@ -52,10 +51,10 @@ export default async function handler(req: NextRequest) {
 		return NextResponse.redirect(addNewUrl, { status: 302 });
 	}
 
-	await tursoClient().execute({
-		sql: 'insert into frameworks(name, language, url, stars) values(?, ?, ?, ?);',
-		args: [name, language, url, stars],
-	});
+	// await tursoClient().execute({
+	// 	sql: 'insert into frameworks(name, language, url, stars) values(?, ?, ?, ?);',
+	// 	args: [name, language, url, stars],
+	// });
 
 	return NextResponse.redirect(addNewUrl + '?message=Framework added!', {
 		status: 302,
@@ -68,14 +67,15 @@ export default async function handler(req: NextRequest) {
  * @param url GitHub url of the framework being fetched
  * @returns {Promise<Framework|null>}
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getFramework(name: string, url: string): Promise<Framework | null> {
-	const response = await tursoClient().execute({
-		sql: 'select * from frameworks where url = ? or name = ?',
-		args: [url, name],
-	});
+	// const response = await tursoClient().execute({
+	// 	sql: 'select * from frameworks where url = ? or name = ?',
+	// 	args: [url, name],
+	// });
 
-	if (response.rows.length) {
-		return response.rows[0] as unknown as Framework;
-	}
+	// if (response.rows.length) {
+	// 	return response.rows[0] as unknown as Framework;
+	// }
 	return null;
 }

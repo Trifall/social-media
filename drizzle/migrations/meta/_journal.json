@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1697751236255,
+      "tag": "0000_parallel_prodigy",
+      "breakpoints": true
+    }
+  ]
+}

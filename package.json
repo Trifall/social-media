@@ -14,12 +14,16 @@
 		"lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --cache --fix --ignore-path ./.gitignore",
 		"format": "prettier --ignore-path .gitignore --log-level warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
 		"pipeline": "yarn install && yarn format && yarn lint && next build",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"generate": "drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
+		"migrate": "tsx drizzle/migrate",
+		"studio": "drizzle-kit studio --port 3333"
 	},
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@headlessui/react": "^1.7.17",
 		"@libsql/client": "^0.3.5",
+		"drizzle-orm": "^0.28.6",
 		"next": "^13.5.6",
 		"next-auth": "^4.24.3",
 		"react": "^18.2.0",
@@ -33,6 +37,9 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
+		"better-sqlite3": "^9.0.0",
+		"dotenv": "^16.3.1",
+		"drizzle-kit": "^0.19.13",
 		"eslint": "^8.44.0",
 		"eslint-config-next": "^13.5.6",
 		"eslint-config-prettier": "^8.8.0",
@@ -41,6 +48,7 @@
 		"postcss": "^8.4.31",
 		"prettier": "^3.0.0",
 		"tailwindcss": "^3.3.3",
+		"tsx": "^3.14.0",
 		"typescript": "5.2.2"
 	}
 }
