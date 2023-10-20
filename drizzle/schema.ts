@@ -60,7 +60,7 @@ export const comments = sqliteTable(
 		id: integer('id').primaryKey(),
 		post_id: integer('post_id').notNull(),
 		user_id: text('user_id').notNull(),
-		contvent: text('content').notNull(),
+		content: text('content').notNull(),
 		created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 	},
 	(comment) => ({
