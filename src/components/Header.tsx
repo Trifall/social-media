@@ -24,11 +24,13 @@ const Header = () => {
 					<Link href='/' passHref>
 						<FaHome className='h-8 w-8 cursor-pointer' />
 					</Link>
-					{navLinks.map(({ title, href }) => (
-						<Link key={href} href={href} className='hover:text-gray-500'>
-							{title}
-						</Link>
-					))}
+					{navLinks.map(({ title, href, isProtected }) =>
+						isProtected && status !== 'authenticated' ? null : (
+							<Link key={href} href={href} className='hover:text-gray-500'>
+								{title}
+							</Link>
+						)
+					)}
 				</div>
 				<div className='flex gap-4'>
 					{status !== 'loading' &&
@@ -121,7 +123,11 @@ const profileLinks = [
 	},
 	{
 		name: 'Sign out',
-		onClick: () => signOut(),
+		onClick: () =>
+			signOut({
+				redirect: true,
+				callbackUrl: '/',
+			}),
 	},
 ];
 
@@ -172,6 +178,11 @@ const navLinks = [
 	{
 		title: 'Home',
 		href: '/',
+	},
+	{
+		title: 'Protected',
+		href: '/protected',
+		isProtected: true,
 	},
 ];
 
