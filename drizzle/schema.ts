@@ -40,7 +40,7 @@ export const frameworks = sqliteTable(
 );
 
 export const posts = sqliteTable(
-	'post',
+	'posts',
 	{
 		id: integer('id').primaryKey(),
 		user_id: text('user_id').notNull(),
@@ -55,7 +55,7 @@ export const posts = sqliteTable(
 );
 
 export const comments = sqliteTable(
-	'comment',
+	'comments',
 	{
 		id: integer('id').primaryKey(),
 		post_id: integer('post_id').notNull(),
