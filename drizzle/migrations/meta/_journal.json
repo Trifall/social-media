@@ -8,6 +8,13 @@
       "when": 1697751236255,
       "tag": "0000_parallel_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1697830401182,
+      "tag": "0001_solid_harrier",
+      "breakpoints": true
     }
   ]
 }
