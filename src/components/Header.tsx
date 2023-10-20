@@ -9,45 +9,41 @@ import { IoMdKey } from 'react-icons/io';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
-import { useRouter } from 'next/router';
 import Button from './Button';
-import Layout from './Layout';
 import Modal from './Modal';
 
 const Header = () => {
 	const [signInModalOpen, setSignInModalOpen] = useState(false);
 	const { data, status } = useSession();
 
-	const router = useRouter();
-
 	return (
-		<div className='h-16 flex items-center text-white'>
+		<div className='h-16 flex items-center justify-center text-white'>
 			<SignInModal signInModalOpen={signInModalOpen} setSignInModalOpen={setSignInModalOpen} />
-			<Layout>
-				<div className='flex justify-between items-center'>
-					<div className='flex text-base font-medium gap-6 items-center'>
-						<FaHome onClick={() => router.push('/')} className='h-8 w-8 cursor-pointer' />
-						{navLinks.map(({ title, href }) => (
-							<Link key={href} href={href} className='hover:text-gray-500'>
-								{title}
-							</Link>
-						))}
-					</div>
-					<div className='flex gap-4'>
-						{status !== 'loading' &&
-							(status === 'authenticated' ? (
-								<ProfilePopover data={data} />
-							) : (
-								<Button
-									onClick={() => setSignInModalOpen(true)}
-									className='bg-transparent border border-white text-white'
-								>
-									Login
-								</Button>
-							))}
-					</div>
+			<div className='flex justify-between items-center w-full mx-2 sm:mx-4'>
+				<div className='flex text-base font-medium gap-6 items-center'>
+					<Link href='/' passHref>
+						<FaHome className='h-8 w-8 cursor-pointer' />
+					</Link>
+					{navLinks.map(({ title, href }) => (
+						<Link key={href} href={href} className='hover:text-gray-500'>
+							{title}
+						</Link>
+					))}
 				</div>
-			</Layout>
+				<div className='flex gap-4'>
+					{status !== 'loading' &&
+						(status === 'authenticated' ? (
+							<ProfilePopover data={data} />
+						) : (
+							<Button
+								onClick={() => setSignInModalOpen(true)}
+								className='bg-transparent border border-white text-white hover:bg-gray-900 transition-all duration-500'
+							>
+								Login
+							</Button>
+						))}
+				</div>
+			</div>
 		</div>
 	);
 };
@@ -119,14 +115,6 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 };
 
 const profileLinks = [
-	// {
-	// 	name: "Your Profile",
-	// 	href: "/profile",
-	// },
-	// {
-	// 	name: 'Create post',
-	// 	href: '/edit',
-	// },
 	{
 		name: 'Settings',
 		href: '/settings',
@@ -152,23 +140,23 @@ const SignInModal = ({
 
 	return (
 		<Modal isOpen={signInModalOpen} closeModal={() => setSignInModalOpen(false)}>
-			<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-slate-800 p-6 text-left align-middle shadow-xl transition-all'>
+			<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-900 p-6 text-left align-middle shadow-xl transition-all'>
 				<div className='flex items-center gap-3'>
-					<div className='p-2 bg-fuchsia-100 rounded-full'>
-						<IoMdKey className='h-6 w-6 text-fuchsia-500' />
+					<div className='p-2 border-2 border-white rounded-full'>
+						<IoMdKey className='h-6 w-6 text-teal-300' />
 					</div>
 					<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
 						Sign in
 					</Dialog.Title>
 				</div>
 				<div className='mt-2'>
-					<p className='text-sm text-gray-200'>Sign in now</p>
+					<p className='text-sm text-gray-200'>Sign in with GitHub below</p>
 				</div>
-				<div className='w-full border-t border-gray-400 my-4' />
+				{/* <div className='w-full border-t border-gray-400 my-4' /> */}
 
 				<div className='mt-4 flex flex-col gap-4'>
 					<Button
-						className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-black transition-all duration-300'
+						className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
 						onClick={() => handleSignIn('github')}
 					>
 						<FaGithub className='h-5 w-5' />

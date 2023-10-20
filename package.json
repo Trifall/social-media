@@ -23,7 +23,10 @@
 	"dependencies": {
 		"@headlessui/react": "^1.7.17",
 		"@libsql/client": "^0.3.5",
+		"@nextui-org/framer-transitions": "^2.0.10",
+		"@nextui-org/tooltip": "^2.0.24",
 		"drizzle-orm": "^0.28.6",
+		"framer-motion": "^10.16.4",
 		"next": "^13.5.6",
 		"next-auth": "^4.24.3",
 		"react": "^18.2.0",
@@ -50,5 +53,6 @@
 		"tailwindcss": "^3.3.3",
 		"tsx": "^3.14.0",
 		"typescript": "5.2.2"
-	}
+	},
+	"packageManager": "yarn@1.22.19"
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-	return <div className='container mx-auto px-4'>{children}</div>;
+	return <div className='container'>{children}</div>;
 };
 
 export default Layout;

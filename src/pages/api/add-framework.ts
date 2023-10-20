@@ -73,6 +73,7 @@ async function getFramework(name: string, url: string): Promise<Framework | null
 	// 	sql: 'select * from frameworks where url = ? or name = ?',
 	// 	args: [url, name],
 	// });
+	console.log(`name: ${name}, url: ${url}`);
 
 	// if (response.rows.length) {
 	// 	return response.rows[0] as unknown as Framework;
