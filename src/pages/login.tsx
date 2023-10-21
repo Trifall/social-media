@@ -31,7 +31,7 @@ const Login = () => {
 				<Image src='/images/login_bg.jpeg' alt='' fill />
 			</div>
 
-			<div className='max-w-lg transform overflow-hidden rounded-2xl border-1 bg-opacity-75 bg-gray-900 h-48 p-6 text-left align-middle shadow-xl transition-all absolute bottom-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2  '>
+			<div className='max-w-lg h-fit transform overflow-hidden rounded-2xl border-1 bg-opacity-75 bg-gray-900 p-6 text-left align-middle shadow-xl transition-all absolute bottom-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2  '>
 				<div className='flex items-center gap-3'>
 					<div className='p-2 border-2 border-white rounded-full'>
 						<IoMdKey className='h-6 w-6 text-teal-300' />

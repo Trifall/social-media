@@ -19,7 +19,7 @@ const Button = ({
 			onClick={onClick}
 			className={`${
 				isLoading ? 'opacity-50' : ''
-			} rounded-lg py-2.5 px-7 text-sm font-medium leading-5 ${defaultButtonClass}`}
+			} rounded-lg py-2.5 px-4 text-sm font-medium leading-5 ${defaultButtonClass}`}
 		>
 			{children}
 		</button>
