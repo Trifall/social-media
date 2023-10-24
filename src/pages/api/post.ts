@@ -5,7 +5,7 @@ import { buildDbClient } from '../../utils/dbClient';
 
 export const runtime = 'edge';
 
-const Media = z.object({
+const MediaSchema = z.object({
 	id: z.number().int(),
 	type: z.string(),
 	url: z.string(),
@@ -19,13 +19,13 @@ const postSchema = z.object({
 		.default(Math.floor(Math.random() * 1000000000)),
 	user_id: z.string(),
 	content: z.string(),
-	media: z.array(Media).max(4).optional(),
+	media: z.array(MediaSchema).max(4).optional(),
 	created_at: z.string().optional(),
 	likes: z.number().int().optional().default(0),
 });
 
 export type Post = z.infer<typeof postSchema>;
-export type Media = z.infer<typeof Media>;
+export type Media = z.infer<typeof MediaSchema>;
 
 export default async function handler(req: NextRequest) {
 	// Create redirect url
