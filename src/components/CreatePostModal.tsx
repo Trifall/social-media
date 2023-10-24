@@ -1,10 +1,11 @@
 import { Dialog } from '@headlessui/react';
+import React, { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import { z } from 'zod';
 import Button from './Button';
 import Modal from './Modal';
-import { MultiUploader } from './UploadButton';
+import MultiUploader from './UploadBox';
 
 const CreatePostSchema = z.object({
 	content: z
@@ -29,12 +30,14 @@ const CreatePostModal = ({
 		// watch,
 		formState: { errors, isDirty },
 		reset,
+		// control,
 	} = useForm<CreatePostInputs>();
 
 	const onSubmit: SubmitHandler<CreatePostInputs> = (data) => {
 		console.log(`onsubmit`);
 		console.log(`data ${data}`);
 		console.log(`errors: ${errors}`);
+		console.log(`filesRef: ${filesRef.current}`);
 	};
 
 	const handleClose = (e: React.FormEvent) => {
@@ -49,6 +52,8 @@ const CreatePostModal = ({
 			reset();
 		}
 	};
+
+	const filesRef = useRef<File[]>([]);
 
 	return (
 		<Modal isOpen={createPostModalOpen} closeModal={() => setCreatePostModalOpen(false)}>
@@ -71,7 +76,7 @@ const CreatePostModal = ({
 							<label>Post Content</label>
 							<textarea maxLength={500} style={{ resize: 'none' }} className='h-96' {...register('content')} />
 						</div>
-						<MultiUploader />
+						<MultiUploader filesRef={filesRef} />
 					</div>
 
 					<div className='mt-4 flex flex-col gap-4'>
