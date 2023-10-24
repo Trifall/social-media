@@ -2,13 +2,13 @@
 
 ## Getting Started
 
-  1. Install Yarn
+1. Install Yarn
 
-  2. Install dependencies:
+2. Install dependencies:
 
-      ```bash
-      yarn install
-      ```
+   ```bash
+   yarn install
+   ```
 
 ## Development
 
@@ -21,24 +21,24 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 (Database) Drizzle studio:
-  
-  ```bash
-  yarn studio
-  ```
 
-  Open [http://localhost:3333](http://localhost:3333) with your browser to see the database studio.
+```bash
+yarn studio
+```
+
+Open [http://localhost:3333](http://localhost:3333) with your browser to see the database studio.
 
 Drizzle database migrations:
 
-  ```bash
-  yarn generate
-  ```
+```bash
+yarn generate
+```
 
-  then
+then
 
-  ```bash
-  yarn migrate
-  ```
+```bash
+yarn migrate
+```
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
