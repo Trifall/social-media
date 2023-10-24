@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
-import React, { useRef } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import { z } from 'zod';
 import Button from './Button';
@@ -30,14 +31,15 @@ const CreatePostModal = ({
 		// watch,
 		formState: { errors, isDirty },
 		reset,
-		// control,
-	} = useForm<CreatePostInputs>();
+		control,
+	} = useForm<CreatePostInputs>({
+		resolver: zodResolver(CreatePostSchema),
+	});
 
 	const onSubmit: SubmitHandler<CreatePostInputs> = (data) => {
 		console.log(`onsubmit`);
-		console.log(`data ${data}`);
-		console.log(`errors: ${errors}`);
-		console.log(`filesRef: ${filesRef.current}`);
+		console.log(`data ${JSON.stringify(data, null, 2)}`);
+		console.log(`errors: ${JSON.stringify(errors, null, 2)}`);
 	};
 
 	const handleClose = (e: React.FormEvent) => {
@@ -52,8 +54,6 @@ const CreatePostModal = ({
 			reset();
 		}
 	};
-
-	const filesRef = useRef<File[]>([]);
 
 	return (
 		<Modal isOpen={createPostModalOpen} closeModal={() => setCreatePostModalOpen(false)}>
@@ -76,7 +76,12 @@ const CreatePostModal = ({
 							<label>Post Content</label>
 							<textarea maxLength={500} style={{ resize: 'none' }} className='h-96' {...register('content')} />
 						</div>
-						<MultiUploader filesRef={filesRef} />
+						<Controller
+							name='media'
+							control={control}
+							defaultValue={[]}
+							render={({ field, fieldState }) => <MultiUploader {...field} {...fieldState} />}
+						/>
 					</div>
 
 					<div className='mt-4 flex flex-col gap-4'>
