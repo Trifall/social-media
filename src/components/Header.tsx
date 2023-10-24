@@ -84,7 +84,7 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 						<BsFillCaretDownFill
 							className={`${
 								open ? 'rotate-180 transform' : 'rotate-0'
-							} dark:text-gray-400 text-neutral-800 transition-transform`}
+							} dark:text-gray-200 text-neutral-800 transition-transform`}
 						/>
 					</Popover.Button>
 
