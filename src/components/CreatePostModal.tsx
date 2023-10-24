@@ -72,11 +72,7 @@ const CreatePostModal = ({
 
 	const session = useSession();
 
-	if (!session.data?.user) {
-		return <div>You must be signed in to view this page</div>;
-	}
-
-	const user = session.data.user;
+	const user = session?.data?.user;
 
 	const onSubmit: SubmitHandler<CreatePostInputs> = async (data) => {
 		if (!user) {
@@ -138,59 +134,82 @@ const CreatePostModal = ({
 	return (
 		<Modal isOpen={createPostModalOpen} closeModal={() => setCreatePostModalOpen(false)}>
 			<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl bg-gray-700 p-6 text-left align-middle shadow-xl transition-all'>
-				<form>
-					<div className='flex items-center gap-3'>
+				{!user && (
+					<div className='flex flex-col items-center gap-3'>
 						<div className='p-2 rounded-full'>
 							<AiOutlinePlusSquare className='h-6 w-6 text-teal-300' />
 						</div>
 						<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
-							Create Post
+							You must be signed in to create a post.
 						</Dialog.Title>
+						<div>
+							<Button onClick={handleClose} className={`border-green-400 border-2 rounded-lg`}>
+								Close
+							</Button>
+						</div>
 					</div>
-					<div className='mt-2'>
-						<p className='text-sm text-gray-200'>Fill out information for your post.</p>
-					</div>
-					{/* <div className='w-full border-t border-gray-400 my-4' /> */}
-					<div className='mt-4 flex flex-col gap-4'>
-						<div className='px-4 py-2 flex flex-col bg-gray-800 rounded-lg'>
-							<label>Post Content</label>
-							<textarea
-								disabled={isComplete}
-								maxLength={500}
-								style={{ resize: 'none' }}
-								className='h-96'
-								{...register('content')}
+				)}
+
+				{user && (
+					<form>
+						<div className='flex items-center gap-3'>
+							<div className='p-2 rounded-full'>
+								<AiOutlinePlusSquare className='h-6 w-6 text-teal-300' />
+							</div>
+							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+								Create Post
+							</Dialog.Title>
+						</div>
+						<div className='mt-2'>
+							<p className='text-sm text-gray-200'>Fill out information for your post.</p>
+						</div>
+						{/* <div className='w-full border-t border-gray-400 my-4' /> */}
+						<div className='mt-4 flex flex-col gap-4'>
+							<div className='px-4 py-2 flex flex-col bg-gray-800 rounded-lg'>
+								<label>Post Content</label>
+								<textarea
+									disabled={isComplete}
+									maxLength={500}
+									style={{ resize: 'none' }}
+									className='h-96'
+									{...register('content')}
+								/>
+							</div>
+							<Controller
+								name='media'
+								control={control}
+								defaultValue={[]}
+								render={({ field, fieldState }) => (
+									<MultiUploader
+										{...field}
+										{...fieldState}
+										permittedFileInfo={permittedFileInfo}
+										disabled={isComplete}
+									/>
+								)}
 							/>
 						</div>
-						<Controller
-							name='media'
-							control={control}
-							defaultValue={[]}
-							render={({ field, fieldState }) => (
-								<MultiUploader {...field} {...fieldState} permittedFileInfo={permittedFileInfo} disabled={isComplete} />
-							)}
-						/>
-					</div>
 
-					<div className='mt-4 flex flex-col gap-4'>
-						<Button
-							className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
-							onClick={handleSubmit(onSubmit)}
-							isLoading={(mutation.status === 'pending' || mutation.isPending || isUploading) && !isComplete}
-							isSuccess={mutation.isSuccess && isComplete}
-							isDisabled={isComplete || mutation.isSuccess || mutation.isPending}
-						>
-							{isComplete && mutation.isSuccess ? `Submitted` : `Submit`}
-						</Button>
-						<Button
-							onClick={handleClose}
-							className={`py-1 ${mutation.isSuccess && `border-green-400 border-2 rounded-lg`}`}
-						>
-							Close
-						</Button>
-						{mutation.failureReason && <span className='text-red-400'>{mutation.failureReason.message}</span>}
-					</div>
-				</form>
+						<div className='mt-4 flex flex-col gap-4'>
+							<Button
+								className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
+								onClick={handleSubmit(onSubmit)}
+								isLoading={(mutation.status === 'pending' || mutation.isPending || isUploading) && !isComplete}
+								isSuccess={mutation.isSuccess && isComplete}
+								isDisabled={isComplete || mutation.isSuccess || mutation.isPending}
+							>
+								{isComplete && mutation.isSuccess ? `Submitted` : `Submit`}
+							</Button>
+							<Button
+								onClick={handleClose}
+								className={`py-1 ${mutation.isSuccess && `border-green-400 border-2 rounded-lg`}`}
+							>
+								Close
+							</Button>
+							{mutation.failureReason && <span className='text-red-400'>{mutation.failureReason.message}</span>}
+						</div>
+					</form>
+				)}
 			</Dialog.Panel>
 		</Modal>
 	);
