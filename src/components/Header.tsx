@@ -5,13 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaGithub } from 'react-icons/fa';
-import { IoMdKey } from 'react-icons/io';
+import { IoMdKey, IoMdSettings } from 'react-icons/io';
 import { useRouter } from 'next/router';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
 import Button from './Button';
 import Modal from './Modal';
+import { AiFillHome } from 'react-icons/ai';
 
 const Header = () => {
 	const router = useRouter();
@@ -23,18 +24,19 @@ const Header = () => {
 			<SignInModal signInModalOpen={signInModalOpen} setSignInModalOpen={setSignInModalOpen} />
 			<div className='flex justify-between items-center w-full mx-2 sm:mx-4'>
 				<div className='flex text-base font-medium gap-2 items-center'>
-					{navLinks.map(({ title, href, isProtected }) =>
+					{navLinks.map(({ title, href, icon, isProtected }) =>
 						isProtected && status !== 'authenticated' ? null : (
 							<Link
 								key={href}
 								href={href}
 								className={
 									router.pathname == href
-										? 'bg-gray-600 px-3 py-2 rounded-lg transition-all duration-500'
-										: 'hover:bg-gray-600 px-3 py-2 rounded-lg transition-all duration-500'
+										? 'flex gap-2 bg-gray-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										: 'flex gap-2 hover:bg-gray-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
 								}
 							>
-								{title}
+								{icon}
+								<span className='hidden lg:inline'>{title}</span>
 							</Link>
 						)
 					)}
@@ -185,11 +187,13 @@ const navLinks = [
 	{
 		title: 'Home',
 		href: '/',
+		icon: <AiFillHome className='h-5 w-5' />,
 	},
 	{
 		title: 'Protected',
 		href: '/protected',
 		isProtected: true,
+		icon: <IoMdSettings className='h-5 w-5' />,
 	},
 ];
 
