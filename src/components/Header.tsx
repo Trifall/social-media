@@ -7,12 +7,13 @@ import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaGithub } from 'react-icons/fa';
 import { IoMdKey, IoMdSettings } from 'react-icons/io';
 import { useRouter } from 'next/router';
+import { AiFillHome } from 'react-icons/ai';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
 import Button from './Button';
 import Modal from './Modal';
-import { AiFillHome } from 'react-icons/ai';
+import ThemeButton from './ThemeButton';
 
 const Header = () => {
 	const router = useRouter();
@@ -20,7 +21,7 @@ const Header = () => {
 	const { data, status } = useSession();
 
 	return (
-		<div className='h-16 flex items-center justify-center text-white border-b-[1px] mb-4'>
+		<div className='h-16 flex items-center justify-center dark:border-b-white border-b-black border-b-[1px] mb-4'>
 			<SignInModal signInModalOpen={signInModalOpen} setSignInModalOpen={setSignInModalOpen} />
 			<div className='flex justify-between items-center w-full mx-2 sm:mx-4'>
 				<div className='flex text-base font-medium gap-2 items-center'>
@@ -31,8 +32,8 @@ const Header = () => {
 								href={href}
 								className={
 									router.pathname == href
-										? 'flex gap-2 bg-zinc-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-										: 'flex gap-2 hover:bg-zinc-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										? 'flex gap-2 dark:bg-neutral-600 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										: 'flex gap-2 dark:hover:bg-neutral-600 dark:text-white hover:bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
 								}
 							>
 								{icon}
@@ -41,14 +42,15 @@ const Header = () => {
 						)
 					)}
 				</div>
-				<div className='flex gap-4'>
+				<div className='flex gap-2'>
+					<ThemeButton />
 					{status !== 'loading' &&
 						(status === 'authenticated' ? (
 							<ProfilePopover data={data} />
 						) : (
 							<Button
 								onClick={() => setSignInModalOpen(true)}
-								className='bg-transparent border border-white text-white hover:bg-gray-900 transition-all duration-500'
+								className='bg-transparent border border-white text-black dark:hover:bg-gray-900 hover:bg-white transition-all duration-500'
 							>
 								Login
 							</Button>
@@ -62,10 +64,10 @@ const Header = () => {
 const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 	if (!data) return null;
 	return (
-		<Popover className='relative hover:bg-zinc-600 rounded-lg p-2 transition-all duration-500'>
+		<Popover className='relative dark:hover:bg-neutral-600 hover:bg-neutral-300 rounded-lg p-2 transition-all duration-500'>
 			{({ open }) => (
 				<>
-					<Popover.Button className='flex items-center gap-2 outline-none'>
+					<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>
 						<div className='relative h-8 w-8'>
 							<Image
 								sizes='100%'
@@ -80,7 +82,9 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 							<div className='font-semibold'>{data.user?.name}</div>
 						</div>
 						<BsFillCaretDownFill
-							className={`${open ? 'rotate-180 transform' : 'rotate-0'} text-gray-400 transition-transform`}
+							className={`${
+								open ? 'rotate-180 transform' : 'rotate-0'
+							} dark:text-gray-400 text-neutral-800 transition-transform`}
 						/>
 					</Popover.Button>
 
@@ -99,7 +103,7 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 									{profileLinks.map((item) =>
 										item.href ? (
 											<Link
-												className='-m-3 flex items-center bg-gray-900 rounded-lg border-white border-2 px-4 py-2 transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
+												className='-m-3 flex items-center text-white bg-gray-900 rounded-lg border-white border-2 px-4 py-2 transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
 												key={item.name}
 												href={item.href}
 											>
