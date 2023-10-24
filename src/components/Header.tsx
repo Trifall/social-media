@@ -4,8 +4,9 @@ import { SessionContextValue, signIn, signOut, useSession } from 'next-auth/reac
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsFillCaretDownFill } from 'react-icons/bs';
-import { FaGithub, FaHome } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import { IoMdKey } from 'react-icons/io';
+import { useRouter } from 'next/router';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
@@ -13,20 +14,26 @@ import Button from './Button';
 import Modal from './Modal';
 
 const Header = () => {
+	const router = useRouter();
 	const [signInModalOpen, setSignInModalOpen] = useState(false);
 	const { data, status } = useSession();
 
 	return (
-		<div className='h-16 flex items-center justify-center text-white'>
+		<div className='h-16 flex items-center justify-center text-white border-b-[1px] mb-4'>
 			<SignInModal signInModalOpen={signInModalOpen} setSignInModalOpen={setSignInModalOpen} />
 			<div className='flex justify-between items-center w-full mx-2 sm:mx-4'>
-				<div className='flex text-base font-medium gap-6 items-center'>
-					<Link href='/' passHref>
-						<FaHome className='h-8 w-8 cursor-pointer' />
-					</Link>
+				<div className='flex text-base font-medium gap-2 items-center'>
 					{navLinks.map(({ title, href, isProtected }) =>
 						isProtected && status !== 'authenticated' ? null : (
-							<Link key={href} href={href} className='hover:text-gray-500'>
+							<Link
+								key={href}
+								href={href}
+								className={
+									router.pathname == href
+										? 'bg-gray-600 px-3 py-2 rounded-lg transition-all duration-500'
+										: 'hover:bg-gray-600 px-3 py-2 rounded-lg transition-all duration-500'
+								}
+							>
 								{title}
 							</Link>
 						)
@@ -53,7 +60,7 @@ const Header = () => {
 const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 	if (!data) return null;
 	return (
-		<Popover className='relative'>
+		<Popover className='relative hover:bg-gray-700 rounded-lg p-1 transition-all duration-500'>
 			{({ open }) => (
 				<>
 					<Popover.Button className='flex items-center gap-2 outline-none'>
