@@ -4,15 +4,18 @@ import { useDropzone } from '@uploadthing/react/hooks';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 import { generateClientDropzoneAccept } from 'uploadthing/client';
-import { useUploadThing } from '../utils/uploadthing';
 
 type MultiUploaderProps = {
 	onChange?: (files: File[]) => void;
 	error?: FieldError;
+	permittedFileInfo?: {
+		config: Record<string, unknown>;
+	};
+	disabled?: boolean;
 };
 
 const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
-	const { onChange, error } = props;
+	const { onChange, error, permittedFileInfo, disabled } = props;
 	const [files, setFiles] = useState<File[]>([]);
 	const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
 		setFiles(acceptedFiles);
@@ -20,18 +23,6 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 
 	// form dirtying ref fix
 	const isInitialized = useRef<boolean>(false);
-
-	const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
-		onClientUploadComplete: () => {
-			alert('uploaded successfully!');
-		},
-		onUploadError: () => {
-			alert('error occurred while uploading');
-		},
-		onUploadBegin: () => {
-			alert('upload has begun');
-		},
-	});
 
 	useEffect(() => {
 		// fixes the form being marked as dirty when the component mounts
@@ -67,14 +58,15 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 				alert(`File(s) Rejected: ${fileRejections[0].errors[0].message}`);
 			}
 		},
+		disabled: files.length >= 4 || disabled,
 	});
 
 	// call startUpload with the files on form submit
 	return (
 		<div
-			className={`py-6 border-2 gap-4  ${
-				error ? `border-red-500` : `border-blue-500`
-			} hover:cursor-pointer flex flex-col justify-center items-center`}
+			className={`py-6 border-2 gap-4  ${error ? `border-red-500` : `border-blue-500`} ${
+				disabled ? `hover:cursor-default opacity-50` : `hover:cursor-pointer`
+			} flex flex-col justify-center items-center`}
 			{...getRootProps()}
 		>
 			<input {...getInputProps()} />

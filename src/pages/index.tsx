@@ -4,48 +4,23 @@ import { useState } from 'react';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import { buildDbClient } from '../utils/dbClient';
-import { Framework } from './api/add-framework';
+import { Post } from './api/post';
 
 type HomeProps = {
-	frameworks: Framework[];
+	posts: Post[];
 };
 
 async function getData() {
 	const db = buildDbClient();
-	const res = await db.query.frameworks.findMany();
+	const res = await db.query.posts.findMany();
 	console.log(`res: ${JSON.stringify(res, null, 2)}`);
-	return res as unknown as Framework[];
-
-	// const mockData: Framework[] = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'React',
-	// 		language: 'JavaScript',
-	// 		url: 'https://github.com/facebook/react',
-	// 		stars: 170000,
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'Vue',
-	// 		language: 'JavaScript',
-	// 		url: 'https://github.com/vuejs/vue',
-	// 		stars: 180000,
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: 'Angular',
-	// 		language: 'TypeScript',
-	// 		url: 'https://github.com/angular/angular',
-	// 		stars: 70000,
-	// 	},
-	// ];
-	// return mockData;
+	return res as unknown as Post[];
 }
 
-export default function Home({ frameworks }: HomeProps) {
+export default function Home({ posts }: HomeProps) {
 	const [createPostModalOpen, setCreatePostModalOpen] = useState(false);
 
-	if (!frameworks) {
+	if (!posts) {
 		return <div>Loading...</div>;
 	}
 
@@ -67,27 +42,19 @@ export default function Home({ frameworks }: HomeProps) {
 						<table className='w-full divide-y-2 divide-gray-200 text-sm'>
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Language</th>
-									<th>GitHub Stars</th>
-									<th>Repo</th>
+									<th>ID</th>
+									<th>USER ID</th>
+									<th>CONTENT</th>
+									<th>MEDIA</th>
 								</tr>
 							</thead>
 							<tbody className='divide-y divide-gray-200'>
-								{frameworks.map((framework: Framework) => (
-									<tr key={framework.id}>
-										<td>{framework.name}</td>
-										<td>{framework.language}</td>
-										<td className='stars'>{framework.stars}</td>
-										<td className='whitespace-nowrap text-center px-4 py-2'>
-											<a
-												href={framework.url}
-												target='_blank'
-												className='group rounded-lg border border-transparent px-2 py-1 transition-colors hover:border-gray-300 hover:dark:border-neutral-700 '
-											>
-												Visit 🔗
-											</a>
-										</td>
+								{posts.map((post: Post) => (
+									<tr key={post.id}>
+										<td>{post.id}</td>
+										<td>{post.user_id}</td>
+										<td>{post.content}</td>
+										{post.media?.map((media) => <td key={media.id}>{media.url}</td>)}
 									</tr>
 								))}
 							</tbody>
@@ -99,9 +66,9 @@ export default function Home({ frameworks }: HomeProps) {
 	);
 }
 
-export const getServerSideProps: GetServerSideProps<{ frameworks: Framework[] }> = async () => {
+export const getServerSideProps: GetServerSideProps<{ posts: Post[] }> = async () => {
 	const data = await getData();
 	return {
-		props: { frameworks: data },
+		props: { posts: data },
 	};
 };

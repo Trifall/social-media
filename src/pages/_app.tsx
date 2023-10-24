@@ -1,9 +1,12 @@
 import '@/styles/globals.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
+import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { ThemeProvider } from 'next-themes';
+
+const queryClient = new QueryClient();
 
 export default function App({
 	Component,
@@ -12,10 +15,12 @@ export default function App({
 	return (
 		<ThemeProvider attribute='class'>
 			<SessionProvider session={session}>
-				{showHeader && <Header />}
-				<Component {...pageProps} />
+				<QueryClientProvider client={queryClient}>
+					{showHeader && <Header />}
+					<Component {...pageProps} />
 
-				{showFooter && <Footer />}
+					{showFooter && <Footer />}
+				</QueryClientProvider>
 			</SessionProvider>
 		</ThemeProvider>
 	);

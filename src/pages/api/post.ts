@@ -6,17 +6,14 @@ import { buildDbClient } from '../../utils/dbClient';
 export const runtime = 'edge';
 
 const MediaSchema = z.object({
-	id: z.number().int(),
-	type: z.string(),
+	id: z.string().optional(),
+	type: z.string().optional(),
 	url: z.string(),
+	name: z.string().optional(),
 });
 
 const postSchema = z.object({
-	id: z
-		.number()
-		.int()
-		.optional()
-		.default(Math.floor(Math.random() * 1000000000)),
+	id: z.number().int().optional(),
 	user_id: z.string(),
 	content: z.string(),
 	media: z.array(MediaSchema).max(4).optional(),
@@ -66,6 +63,12 @@ export default async function handler(req: NextRequest) {
 			}
 		);
 	}
+
+	if (!parsed.data.id) {
+		parsed.data.id = Math.floor(Math.random() * 1000000000);
+	}
+
+	console.log(`parsed: ${JSON.stringify(parsed, null, 2)}`);
 
 	const db = buildDbClient();
 	const res = await db.insert(posts).values(parsed.data).returning().run();
