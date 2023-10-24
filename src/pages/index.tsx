@@ -35,7 +35,10 @@ export default function Home({ posts }: HomeProps) {
 			<main className='bg-inherit'>
 				<CreatePostModal createPostModalOpen={createPostModalOpen} setCreatePostModalOpen={setCreatePostModalOpen} />
 				<div className='mb-32 flex flex-col text-center lg:mb-0 lg:text-left'>
-					<Button className='w-48 border-2' onClick={() => setCreatePostModalOpen(true)}>
+					<Button
+						className='w-48  dark:bg-neutral-600 dark:hover:bg-gray-500 hover:bg-neutral-400 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+						onClick={() => setCreatePostModalOpen(true)}
+					>
 						Create Post
 					</Button>
 					<div className='mt-20 overflow-x-auto rounded-lg border border-gray-200 w-[80vw] max-w-2xl'>

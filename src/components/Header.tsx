@@ -3,11 +3,11 @@ import React, { Fragment, useState } from 'react';
 import { SessionContextValue, signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { AiFillHome } from 'react-icons/ai';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaGithub } from 'react-icons/fa';
 import { IoMdKey, IoMdSettings } from 'react-icons/io';
-import { useRouter } from 'next/router';
-import { AiFillHome } from 'react-icons/ai';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
@@ -32,8 +32,8 @@ const Header = () => {
 								href={href}
 								className={
 									router.pathname == href
-										? 'flex gap-2 dark:bg-neutral-600 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-										: 'flex gap-2 dark:hover:bg-neutral-600 dark:text-white hover:bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										? 'flex gap-2 dark:bg-neutral-600 dark:hover:bg-gray-500 hover:bg-neutral-400 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										: 'flex gap-2 dark:hover:bg-gray-500  dark:text-white hover:bg-neutral-400 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
 								}
 							>
 								{icon}
@@ -50,7 +50,7 @@ const Header = () => {
 						) : (
 							<Button
 								onClick={() => setSignInModalOpen(true)}
-								className='bg-transparent border border-white text-black dark:hover:bg-gray-900 hover:bg-white transition-all duration-500'
+								className='dark:bg-neutral-600 dark:text-white bg-neutral-300 text-black dark:hover:bg-gray-500 hover:bg-neutral-400 transition-all duration-500'
 							>
 								Login
 							</Button>
