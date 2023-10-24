@@ -18,6 +18,7 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 		setFiles(acceptedFiles);
 	}, []);
 
+	// form dirtying ref fix
 	const isInitialized = useRef<boolean>(false);
 
 	const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
@@ -33,6 +34,7 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 	});
 
 	useEffect(() => {
+		// fixes the form being marked as dirty when the component mounts
 		if (!isInitialized.current) {
 			if (files.length <= 0) {
 				return;
@@ -40,6 +42,7 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 				isInitialized.current = true;
 			}
 		}
+
 		onChange?.(files);
 	}, [files, onChange]);
 
