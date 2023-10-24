@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
+import { MultiUploader } from '../components/UploadButton';
 import { buildDbClient } from '../utils/dbClient';
 import { Framework } from './api/add-framework';
 
@@ -94,7 +95,6 @@ export default function Home({ frameworks }: HomeProps) {
 								))}
 							</tbody>
 						</table>
-						B
 					</div>
 				</div>
 			</main>
@@ -135,6 +135,9 @@ const CreatePostModal = ({
 					<p className='text-sm text-gray-200'>Fill out information for your post.</p>
 				</div>
 				{/* <div className='w-full border-t border-gray-400 my-4' /> */}
+				<div className='mt-4'>
+					<MultiUploader />
+				</div>
 
 				<div className='mt-4 flex flex-col gap-4'>
 					<Button
