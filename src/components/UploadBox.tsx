@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { FileWithPath } from '@uploadthing/react';
 import { useDropzone } from '@uploadthing/react/hooks';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { generateClientDropzoneAccept } from 'uploadthing/client';
 import { useUploadThing } from '../utils/uploadthing';
 
-export function MultiUploader() {
+type MultiUploaderProps = {
+	filesRef: React.MutableRefObject<File[]>;
+};
+
+function MultiUploader({ filesRef }: MultiUploaderProps) {
 	const [files, setFiles] = useState<File[]>([]);
 	const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
 		setFiles(acceptedFiles);
@@ -22,6 +26,10 @@ export function MultiUploader() {
 			alert('upload has begun');
 		},
 	});
+
+	useEffect(() => {
+		filesRef.current = files;
+	}, [files, filesRef]);
 
 	const fileTypes = permittedFileInfo?.config ? Object.keys(permittedFileInfo?.config) : [];
 
@@ -48,3 +56,5 @@ export function MultiUploader() {
 		</div>
 	);
 }
+
+export default MultiUploader;
