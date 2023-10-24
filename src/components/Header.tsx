@@ -31,8 +31,8 @@ const Header = () => {
 								href={href}
 								className={
 									router.pathname == href
-										? 'flex gap-2 bg-gray-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-										: 'flex gap-2 hover:bg-gray-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										? 'flex gap-2 bg-zinc-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+										: 'flex gap-2 hover:bg-zinc-600 px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
 								}
 							>
 								{icon}
@@ -62,7 +62,7 @@ const Header = () => {
 const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 	if (!data) return null;
 	return (
-		<Popover className='relative hover:bg-gray-700 rounded-lg p-1 transition-all duration-500'>
+		<Popover className='relative hover:bg-zinc-600 rounded-lg p-2 transition-all duration-500'>
 			{({ open }) => (
 				<>
 					<Popover.Button className='flex items-center gap-2 outline-none'>
