@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/pages/api/auth/[...nextauth].ts
 
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import { users } from '../../../../drizzle/schema';
 import { buildDbClient } from '../../../utils/dbClient';
+
+declare module 'next-auth' {
+	interface Session {
+		user: {
+			id: string;
+		} & DefaultSession['user'];
+	}
+}
 
 export const authOptions: NextAuthOptions = {
 	// Configure one or more authentication providers
@@ -70,6 +78,9 @@ export const authOptions: NextAuthOptions = {
 		async session({ session, token }) {
 			// Send properties to the client, like an access_token from a provider.
 			(session as any).user = token.user;
+
+			// console.log(`session: ${JSON.stringify(session, null, 2)}`);
+
 			return session;
 		},
 	},
