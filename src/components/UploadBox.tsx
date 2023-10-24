@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { FileWithPath } from '@uploadthing/react';
 import { useDropzone } from '@uploadthing/react/hooks';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 import { generateClientDropzoneAccept } from 'uploadthing/client';
 import { useUploadThing } from '../utils/uploadthing';
@@ -18,6 +18,8 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 		setFiles(acceptedFiles);
 	}, []);
 
+	const isInitialized = useRef<boolean>(false);
+
 	const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
 		onClientUploadComplete: () => {
 			alert('uploaded successfully!');
@@ -31,6 +33,13 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 	});
 
 	useEffect(() => {
+		if (!isInitialized.current) {
+			if (files.length <= 0) {
+				return;
+			} else {
+				isInitialized.current = true;
+			}
+		}
 		onChange?.(files);
 	}, [files, onChange]);
 
