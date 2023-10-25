@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
 
 				return true;
 			} catch (error: any) {
-				console.log(error.message);
+				console.log(`[NextAuth/SignIn] ${error.message}`);
 				return false;
 			}
 		},

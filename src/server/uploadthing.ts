@@ -37,16 +37,16 @@ export const ourFileRouter = {
 			if (!user) {
 				throw new Error('Unauthorized');
 			}
-			console.log(`user: ${user}`);
+			console.log(`[UploadThing/Middleware] user: ${user}`);
 
 			// Whatever is returned here is accessible in onUploadComplete as `metadata`
 			return { userId: user };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
 			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
+			console.log('[UploadThing/Middleware] Upload complete for userId:', metadata.userId);
 
-			console.log('file url', file.url);
+			console.log('[UploadThing/Middleware] file url', file.url);
 		}),
 } satisfies FileRouter;
 

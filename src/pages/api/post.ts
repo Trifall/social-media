@@ -68,12 +68,12 @@ export default async function handler(req: NextRequest) {
 		parsed.data.id = Math.floor(Math.random() * 1000000000);
 	}
 
-	console.log(`parsed: ${JSON.stringify(parsed, null, 2)}`);
+	console.log(`[API/Post] parsed input: ${JSON.stringify(parsed, null, 2)}`);
 
 	const db = buildDbClient();
 	const res = await db.insert(posts).values(parsed.data).returning().run();
 
-	console.log(`res: ${JSON.stringify(res, null, 2)}`);
+	console.log(`[API/Post] res: ${JSON.stringify(res, null, 2)}`);
 
 	return NextResponse.json(
 		{
