@@ -12,7 +12,10 @@ type HomeProps = {
 
 async function getData() {
 	const db = buildDbClient();
-	const res = await db.query.posts.findMany();
+	const res = await db.query.posts.findMany({ with: { users: true } });
+
+	console.log(`res: ${JSON.stringify(res, null, 2)}`);
+
 	// console.log(`res: ${JSON.stringify(res, null, 2)}`);
 	console.log(`[gssp/getData] Post count received: ${res.length}`);
 	return res as unknown as Post[];
