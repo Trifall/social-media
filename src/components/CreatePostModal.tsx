@@ -32,7 +32,7 @@ const CreatePostModal = ({
 	createPostModalOpen: boolean;
 	setCreatePostModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const [isComplete, setSubmitted] = useState(false);
+	const [isComplete, setComplete] = useState(false);
 	const [isUploading, setIsUploading] = useState(false);
 
 	// TODO: on upload error, cancel mutation, set error status on form
@@ -47,11 +47,13 @@ const CreatePostModal = ({
 		onSuccess: () => {
 			// Invalidate and refetch
 			// queryClient.invalidateQueries({ queryKey: ['todos'] });
-			setSubmitted(true);
+			setComplete(true);
 			setIsUploading(false);
 			// alert(`mutation success!!!`);
 		},
 	});
+
+	console.log(`isComplete ${isComplete}, isUploading ${isUploading}, mutation ${JSON.stringify(mutation, null, 2)}`);
 
 	// form hook
 	const {
@@ -99,9 +101,8 @@ const CreatePostModal = ({
 			content: data.content,
 		};
 
-		setIsUploading(true);
-
 		if (data?.media && data?.media?.length > 0) {
+			setIsUploading(true);
 			console.log(`sub starting startUpload`);
 			const uploadFilesResponse: UploadFileResponse[] | undefined = await startUpload(data.media);
 			if (uploadFilesResponse) {
@@ -119,6 +120,7 @@ const CreatePostModal = ({
 
 				formData.media = mediaURLs;
 			}
+			setIsUploading(false);
 		}
 
 		console.log(`sub formData ${JSON.stringify(formData, null, 2)}`);
@@ -131,17 +133,27 @@ const CreatePostModal = ({
 		console.log(`sub completed startUpload`);
 	};
 
+	const formReset = () => {
+		// reset the form data
+		reset();
+		// set the state variables to default
+		setIsUploading(false);
+		setComplete(false);
+		// reset the mutation data
+		mutation.reset();
+	};
+
 	// modal close handler
 	const handleClose = (e?: React.FormEvent) => {
 		e?.preventDefault();
 		if (isDirty && !isComplete) {
 			if (confirm('Are you sure you want to close? All unsaved changes will be lost.')) {
 				setCreatePostModalOpen(false);
-				reset();
+				formReset();
 			}
 		} else {
 			setCreatePostModalOpen(false);
-			reset();
+			formReset();
 		}
 	};
 
