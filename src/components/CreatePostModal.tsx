@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
@@ -34,6 +35,11 @@ const CreatePostModal = ({
 	const [isComplete, setSubmitted] = useState(false);
 	const [isUploading, setIsUploading] = useState(false);
 
+	// TODO: on upload error, cancel mutation, set error status on form
+
+	const router = useRouter();
+
+	// react-query API mutation
 	const mutation = useMutation({
 		mutationFn: (data: CreatePostInputs) => {
 			return axios.post('/api/post', data);
@@ -47,6 +53,7 @@ const CreatePostModal = ({
 		},
 	});
 
+	// form hook
 	const {
 		register,
 		handleSubmit,
@@ -58,22 +65,25 @@ const CreatePostModal = ({
 		resolver: zodResolver(CreatePostSchema),
 	});
 
+	// uploadthing hook
 	const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
 		onClientUploadComplete: () => {
 			// alert('onclientcomplete uploaded successfully!');
 		},
 		onUploadError: () => {
-			alert('onuploaderror error occurred while uploading');
+			alert('An error occurred while uploading!');
 		},
 		onUploadBegin: () => {
 			// alert('onuploadbegin upload has begun');
 		},
 	});
 
+	// auth hook
 	const session = useSession();
 
 	const user = session?.data?.user;
 
+	// form submit handler
 	const onSubmit: SubmitHandler<CreatePostInputs> = async (data) => {
 		if (!user) {
 			alert(`You must be signed in to create a post.`);
@@ -115,9 +125,13 @@ const CreatePostModal = ({
 		// make api call
 		const postResponse = await mutation.mutateAsync(formData);
 		console.log(`sub postResponse ${JSON.stringify(postResponse, null, 2)}`);
+		if (postResponse.status === 200) {
+			router.replace(router.asPath);
+		}
 		console.log(`sub completed startUpload`);
 	};
 
+	// modal close handler
 	const handleClose = (e?: React.FormEvent) => {
 		e?.preventDefault();
 		if (isDirty && !isComplete) {
