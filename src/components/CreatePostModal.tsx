@@ -49,11 +49,8 @@ const CreatePostModal = ({
 			// queryClient.invalidateQueries({ queryKey: ['todos'] });
 			setComplete(true);
 			setIsUploading(false);
-			// alert(`mutation success!!!`);
 		},
 	});
-
-	console.log(`isComplete ${isComplete}, isUploading ${isUploading}, mutation ${JSON.stringify(mutation, null, 2)}`);
 
 	// form hook
 	const {
@@ -82,7 +79,7 @@ const CreatePostModal = ({
 
 	// auth hook
 	const session = useSession();
-
+	// get user object
 	const user = session?.data?.user;
 
 	// form submit handler
@@ -92,9 +89,9 @@ const CreatePostModal = ({
 			return;
 		}
 
-		console.log(`onsubmit`);
-		console.log(`data ${JSON.stringify(data, null, 2)}`);
-		console.log(`errors: ${JSON.stringify(errors, null, 2)}`);
+		// console.log(`onsubmit`);
+		console.log(`initial formData ${JSON.stringify(data, null, 2)}`);
+		console.log(`initial form errors: ${JSON.stringify(errors, null, 2)}`);
 
 		const formData: CreatePostInputs & { user_id: string } = {
 			user_id: user.id,
@@ -103,11 +100,11 @@ const CreatePostModal = ({
 
 		if (data?.media && data?.media?.length > 0) {
 			setIsUploading(true);
-			console.log(`sub starting startUpload`);
+			console.log(`Starting file upload for ${data.media.length} files...`);
 			const uploadFilesResponse: UploadFileResponse[] | undefined = await startUpload(data.media);
 			if (uploadFilesResponse) {
-				console.log(`sub uploadFilesResponse ${JSON.stringify(uploadFilesResponse, null, 2)}`);
-				// alert(`sub uploaded successfully!`);
+				// console.log(`sub uploadFilesResponse ${JSON.stringify(uploadFilesResponse, null, 2)}`);
+				alert(`File upload complete`);
 
 				const mediaURLs: Media[] = uploadFilesResponse.map((file) => ({
 					id: file.key,
@@ -116,21 +113,24 @@ const CreatePostModal = ({
 					size: file.size,
 				}));
 
-				console.log(`sub mediaURLs ${JSON.stringify(mediaURLs, null, 2)}`);
+				// console.log(`sub mediaURLs ${JSON.stringify(mediaURLs, null, 2)}`);
 
 				formData.media = mediaURLs;
+			} else {
+				alert(`File upload failed, please try again.`);
+				return;
 			}
 			setIsUploading(false);
 		}
 
-		console.log(`sub formData ${JSON.stringify(formData, null, 2)}`);
+		console.log(`post-upload formData ${JSON.stringify(formData, null, 2)}`);
 		// make api call
 		const postResponse = await mutation.mutateAsync(formData);
-		console.log(`sub postResponse ${JSON.stringify(postResponse, null, 2)}`);
+		console.log(`API postResponse ${JSON.stringify(postResponse, null, 2)}`);
 		if (postResponse.status === 200) {
 			router.replace(router.asPath);
 		}
-		console.log(`sub completed startUpload`);
+		console.log(`Form submission process complete`);
 	};
 
 	const formReset = () => {
