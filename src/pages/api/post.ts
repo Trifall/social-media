@@ -19,6 +19,7 @@ const postSchema = z.object({
 	media: z.array(MediaSchema).max(4).optional(),
 	created_at: z.string().optional(),
 	likes: z.number().int().optional().default(0),
+	users: z.object({ name: z.string() }).optional(),
 });
 
 export type Post = z.infer<typeof postSchema>;

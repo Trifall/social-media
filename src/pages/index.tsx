@@ -59,7 +59,7 @@ export default function Home({ posts }: HomeProps) {
 								{posts.map((post: Post) => (
 									<tr key={post.id}>
 										<td>{post.id}</td>
-										<td>{post.user_id}</td>
+										<td>{post.users?.name}</td>
 										<td>{post.content}</td>
 										{post.media?.map((media) => <td key={media.id}>{media.url}</td>)}
 									</tr>
