@@ -5,7 +5,7 @@ import { CgProfile } from 'react-icons/cg';
 
 const Footer = () => {
 	return (
-		<footer className='py-4 md:px-6 lg:px-8 border-t-2 border-gray-700 bottom-0 left-1/2 -translate-x-1/2 fixed'>
+		<footer className='py-3 md:px-6 lg:px-8 border-t-2 border-gray-700 bottom-0 left-1/2 -translate-x-1/2 fixed'>
 			<div className='mx-auto max-w-screen-xl text-center'>
 				<ul className='flex flex-wrap justify-center items-center mb-2 gap-4 text-white'>
 					<Tooltip content="Jerren's Website" placement='top'>

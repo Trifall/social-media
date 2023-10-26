@@ -48,7 +48,7 @@ export default function Home({ posts }: HomeProps) {
 							Create Post
 						</Button>
 						{posts.map((post) => (
-							<div key={post.id} className='bg-stone-600 flex flex-col rounded-lg bg-inherit p-2'>
+							<div key={post.id} className='dark:bg-neutral-800 bg-neutral-200 flex flex-col rounded-lg bg-inherit p-2'>
 								<div className='flex items-center gap-5 px-3 pt-3'>
 									<div className='relative h-12 w-12'>
 										<Image
@@ -63,14 +63,14 @@ export default function Home({ posts }: HomeProps) {
 									<h1 className='dark:text-white text-black font-bold text-xl'>{post.users?.name}</h1>
 								</div>
 								<div className='px-3 pt-3'>{post.content}</div>
-								<div className='px-3 pt-3 flex flex-wrap gap-4'>
+								<div className='px-3 pt-3 flex flex-wrap justify-evenly gap-4'>
 									{post.media?.map((media) => {
 										return (
 											<img
 												src={media.url}
 												key={media.id}
 												alt='media'
-												className='p-3 border object-contain rounded-lg max-w-sm'
+												className='p-3 border border-neutral-400 dark:border-neutral-50 flex-auto object-contain rounded-lg max-w-sm'
 											/>
 										);
 									})}
