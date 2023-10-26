@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
+import NoSSR from '../components/NoSSR';
 import { buildDbClient } from '../utils/dbClient';
 import { Post } from './api/post';
 
@@ -47,49 +48,56 @@ export default function Home({ posts }: HomeProps) {
 						>
 							Create Post
 						</Button>
-						{posts.map((post) => (
-							<div key={post.id} className='dark:bg-neutral-800 bg-neutral-200 flex flex-col rounded-lg bg-inherit p-2'>
-								<div className='flex items-center gap-5 px-3 pt-3'>
-									<div className='relative h-12 w-12'>
-										<Image
-											sizes='100%'
-											className='rounded-full object-cover m-0'
-											fill
-											quality={100}
-											alt='profile'
-											src={post.users?.profileImage ?? ''}
-										/>
-									</div>
-									<h1 className='dark:text-white text-black font-bold text-xl'>{post.users?.name}</h1>
-								</div>
-								<div className='px-3 pt-3'>{post.content}</div>
-								<div className='px-3 pt-3 flex flex-wrap justify-evenly gap-4'>
-									{post.media?.map((media) => {
-										return (
-											<img
-												src={media.url}
-												key={media.id}
-												alt='media'
-												className='p-3 border border-neutral-400 dark:border-neutral-50 flex-auto object-contain rounded-lg max-w-sm'
+						{posts.map((post) => {
+							const dateString = post.created_at
+								? new Date(post.created_at).toLocaleTimeString('en-US', {
+										year: 'numeric',
+										month: 'short',
+										day: 'numeric',
+										weekday: 'long',
+										hour: '2-digit',
+										minute: '2-digit',
+										timeZoneName: 'short',
+								  })
+								: 'N/A';
+
+							return (
+								<div
+									key={post.id}
+									className='dark:bg-neutral-800 bg-neutral-200 flex flex-col rounded-lg bg-inherit p-2'
+								>
+									<div className='flex items-center gap-5 px-3 pt-3'>
+										<div className='relative h-12 w-12'>
+											<Image
+												sizes='100%'
+												className='rounded-full object-cover m-0'
+												fill
+												quality={100}
+												alt='profile'
+												src={post.users?.profileImage ?? ''}
 											/>
-										);
-									})}
+										</div>
+										<h1 className='dark:text-white text-black font-bold text-xl'>{post.users?.name}</h1>
+									</div>
+									<div className='px-3 pt-3'>{post.content}</div>
+									<div className='px-3 pt-3 flex flex-wrap justify-evenly gap-4'>
+										{post.media?.map((media) => {
+											return (
+												<img
+													src={media.url}
+													key={media.id}
+													alt='media'
+													className='p-3 border border-neutral-400 dark:border-neutral-50 flex-auto object-contain rounded-lg max-w-sm'
+												/>
+											);
+										})}
+									</div>
+									<NoSSR>
+										<div className='px-3 pt-3'>{dateString}</div>
+									</NoSSR>
 								</div>
-								<div className='px-3 pt-3'>
-									{post.created_at
-										? new Date(post.created_at).toLocaleTimeString('en-US', {
-												year: 'numeric',
-												month: 'short',
-												day: 'numeric',
-												weekday: 'long',
-												hour: '2-digit',
-												minute: '2-digit',
-												timeZoneName: 'short',
-										  })
-										: 'N/A'}
-								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 			</main>
