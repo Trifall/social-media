@@ -2,8 +2,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
+import { HiOutlineChatBubbleOvalLeft, HiOutlineHeart } from 'react-icons/hi2';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import NoSSR from '../components/NoSSR';
@@ -99,9 +98,8 @@ export default function Home({ posts }: HomeProps) {
 											<button className='h-min w-min items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
 												<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
 											</button>
-											<button className='h-[32px] w-[32px] justify-center flex items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white relative'>
-												<BsHeart className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:fill-red-500' />
-												<BsHeartFill className='opacity-0 hover:opacity-100 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:fill-red-500' />
+											<button className='h-min w-min justify-center flex items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
+												<HiOutlineHeart className='h-8 w-8 p-0 hover:fill-red-500' />
 											</button>
 										</div>
 										<NoSSR>
