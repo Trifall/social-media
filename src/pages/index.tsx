@@ -40,7 +40,7 @@ export default function Home({ posts }: HomeProps) {
 			<main className='flex items-center justify-center bg-inherit'>
 				<CreatePostModal createPostModalOpen={createPostModalOpen} setCreatePostModalOpen={setCreatePostModalOpen} />
 				<div className='mb-32 flex max-w-[80vw] items-center justify-center lg:mb-0 lg:text-left'>
-					<div className='relative flex max-h-[80vh] flex-col items-center gap-4 overflow-y-scroll'>
+					<div className='relative flex max-h-[80vh] flex-col items-center gap-4 overflow-y-scroll no-scrollbar'>
 						<Button
 							className='w-48  items-center rounded-lg bg-neutral-300 px-4 py-3 text-black transition-all duration-500 hover:bg-neutral-400 dark:bg-neutral-600 dark:text-white dark:hover:bg-gray-500 lg:px-3 lg:py-2'
 							onClick={() => setCreatePostModalOpen(true)}
