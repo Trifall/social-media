@@ -11,15 +11,15 @@ type HomeProps = {
 	posts: Post[];
 };
 
-async function getData() {
+async function getPosts() {
 	const db = buildDbClient();
-	const res = await db.query.posts.findMany({ with: { users: true } });
+	const postsResponse = await db.query.posts.findMany({ with: { users: true } });
 
-	console.log(`res: ${JSON.stringify(res, null, 2)}`);
+	console.log(`Posts Response: ${JSON.stringify(postsResponse, null, 2)}`);
 
 	// console.log(`res: ${JSON.stringify(res, null, 2)}`);
-	console.log(`[gssp/getData] Post count received: ${res.length}`);
-	return res as unknown as Post[];
+	console.log(`[gSSP/getPosts/getData] Post count received: ${postsResponse.length}`);
+	return postsResponse as unknown as Post[];
 }
 
 export default function Home({ posts }: HomeProps) {
@@ -58,8 +58,8 @@ export default function Home({ posts }: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps<{ posts: Post[] }> = async () => {
-	const data = await getData();
+	const postData = await getPosts();
 	return {
-		props: { posts: data },
+		props: { posts: postData },
 	};
 };
