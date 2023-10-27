@@ -5,7 +5,7 @@ import { buildDbClient } from '../../utils/dbClient';
 
 export const runtime = 'edge';
 
-const MediaSchema = z.object({
+export const MediaSchema = z.object({
 	id: z.string().optional(),
 	type: z.string().optional(),
 	url: z.string(),
