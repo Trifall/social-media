@@ -1,6 +1,8 @@
 import { GetServerSideProps } from 'next';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
+import { LikedPost } from '../../drizzle/schema';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import PostCard from '../components/PostCard';
@@ -9,13 +11,14 @@ import { Post } from './api/post';
 
 type HomeProps = {
 	posts: Post[];
+	liked_posts?: LikedPost[];
 };
 
 async function getPosts() {
 	const db = buildDbClient();
 	const postsResponse = await db.query.posts.findMany({ with: { users: true } });
 
-	console.log(`Posts Response: ${JSON.stringify(postsResponse, null, 2)}`);
+	// console.log(`Posts Response: ${JSON.stringify(postsResponse, null, 2)}`);
 
 	// console.log(`res: ${JSON.stringify(res, null, 2)}`);
 	console.log(`[gSSP/getPosts/getData] Post count received: ${postsResponse.length}`);
@@ -24,6 +27,9 @@ async function getPosts() {
 
 export default function Home({ posts }: HomeProps) {
 	const [createPostModalOpen, setCreatePostModalOpen] = useState(false);
+
+	const session = useSession();
+	const user = session?.data?.user;
 
 	if (!posts) {
 		return <div>Loading...</div>;
@@ -48,7 +54,7 @@ export default function Home({ posts }: HomeProps) {
 							Create Post
 						</Button>
 						{posts.map((post) => {
-							return <PostCard post={post} key={post.id} />;
+							return <PostCard post={post} key={post.id} user={user} />;
 						})}
 					</div>
 				</div>
@@ -59,6 +65,8 @@ export default function Home({ posts }: HomeProps) {
 
 export const getServerSideProps: GetServerSideProps<{ posts: Post[] }> = async () => {
 	const postData = await getPosts();
+	// const session = await getServerSession(context.req, context.res, authOptions);
+
 	return {
 		props: { posts: postData },
 	};

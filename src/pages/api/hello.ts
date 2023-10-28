@@ -3,8 +3,6 @@ import { NextRequest } from 'next/server';
 
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 export default async function handler(req: NextRequest) {
 	const reqMethod = req.method;
 

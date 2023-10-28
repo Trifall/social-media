@@ -3,13 +3,14 @@
 
 import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
-import { users } from '../../../../drizzle/schema';
+import { LikedPost, users } from '../../../../drizzle/schema';
 import { buildDbClient } from '../../../utils/dbClient';
 
 declare module 'next-auth' {
 	interface Session {
 		user: {
 			id: string;
+			liked_posts: LikedPost[];
 		} & DefaultSession['user'];
 	}
 }
@@ -46,6 +47,7 @@ export const authOptions: NextAuthOptions = {
 							name: session.user.name,
 							email: session.user.email,
 							profileImage: session.user.image,
+							liked_posts: [],
 						})
 						.returning()
 						.get();
@@ -79,7 +81,26 @@ export const authOptions: NextAuthOptions = {
 			// Send properties to the client, like an access_token from a provider.
 			(session as any).user = token.user;
 
-			// console.log(`session: ${JSON.stringify(session, null, 2)}`);
+			try {
+				const db = await buildDbClient();
+				const likedPostsResponse = await db.query.users.findMany({
+					where: (users, { eq }) => eq(users.id, session.user.id),
+					columns: {
+						liked_posts: true,
+					},
+				});
+
+				if (likedPostsResponse && likedPostsResponse.length === 0) {
+					session.user.liked_posts = [];
+				} else if (likedPostsResponse && likedPostsResponse.length > 0) {
+					if (likedPostsResponse[0].liked_posts) {
+						session.user.liked_posts = likedPostsResponse[0].liked_posts;
+					}
+				}
+			} catch (error: any) {
+				console.log(`[NextAuth/Session] ${error.message}`);
+				session.user.liked_posts = [];
+			}
 
 			return session;
 		},

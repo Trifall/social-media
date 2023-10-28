@@ -1,16 +1,83 @@
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { Session } from 'next-auth/core/types';
 import Image from 'next/image';
-import { HiOutlineChatBubbleOvalLeft, HiOutlineHeart } from 'react-icons/hi2';
+import { useEffect, useState } from 'react';
+import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
+import { LikePostData } from '../pages/api/like_post';
 import { Post } from '../pages/api/post';
+import LikeButton from './LikeButton';
 import NoSSR from './NoSSR';
 
 type PostCardProps = {
 	post: Post;
+	user?: Session['user'];
 };
 
-const PostCard = ({ post }: PostCardProps) => {
+const PostCard = ({ post, user }: PostCardProps) => {
+	const [isLiked, setIsLiked] = useState(false);
+	// mutation loading state
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		if (!user) {
+			return;
+		}
+
+		if (user?.liked_posts) {
+			const likedPost = !!user?.liked_posts?.find((likedPost) => likedPost.post_id === post.id);
+			setIsLiked(likedPost);
+		}
+
+		// console.log(`user object: ${JSON.stringify(user, null, 2)}`);
+	}, [post.id, user, user?.liked_posts]);
+
+	const mutation = useMutation({
+		mutationFn: (data: LikePostData) => {
+			return axios.post('/api/like_post', data);
+		},
+		onSuccess: () => {
+			console.log('Like post mutation success');
+		},
+	});
+
 	if (!post) {
 		return <div>Loading...</div>;
 	}
+
+	const handleLikeButtonClicked = async () => {
+		// console.log('Like button clicked');
+		if (!user || !user.id) {
+			alert('Error: User not logged in');
+			return;
+		}
+
+		if (!post.id) {
+			alert('Error: Post id not found');
+			return;
+		}
+
+		setIsLoading(true);
+
+		// make a request to the api to add liked post to user
+		const likePostResponse = await mutation.mutateAsync({
+			post_id: post.id,
+			user_id: user?.id,
+			set_state: !isLiked,
+		} as LikePostData);
+
+		// console.log(`likePostResponse: ${JSON.stringify(likePostResponse, null, 2)}`);
+
+		if (likePostResponse.status === 200) {
+			// alert('Post liked/unliked successfully');
+			setIsLiked(!isLiked);
+		} else {
+			alert(
+				`Error: Failed to like/unlike post. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
+			);
+		}
+		setIsLoading(false);
+	};
 
 	const dateString = post.created_at
 		? new Date(post.created_at).toLocaleTimeString('en-US', {
@@ -25,7 +92,7 @@ const PostCard = ({ post }: PostCardProps) => {
 		: 'N/A';
 
 	return (
-		<div key={post.id} className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800'>
+		<div className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800'>
 			<div className='flex items-center gap-5 px-3 pt-3'>
 				<div className='relative h-12 w-12'>
 					<Image
@@ -57,9 +124,12 @@ const PostCard = ({ post }: PostCardProps) => {
 					<button className='h-min w-min items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
 						<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
 					</button>
-					<button className='h-min w-min justify-center flex items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
-						<HiOutlineHeart className='h-8 w-8 p-0 hover:fill-red-500' />
-					</button>
+					<LikeButton
+						key={post.id}
+						onClick={handleLikeButtonClicked}
+						isDisabled={isLoading || mutation?.isPending}
+						isLiked={isLiked}
+					/>
 				</div>
 				<NoSSR>
 					<div className='px-3 items-center flex justify-center'>

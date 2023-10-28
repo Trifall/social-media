@@ -2,7 +2,7 @@ import { relations, sql } from 'drizzle-orm';
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { Media } from '../src/pages/api/post';
 
-type LikedPost = {
+export type LikedPost = {
 	post_id: number;
 	timestamp: Date;
 };

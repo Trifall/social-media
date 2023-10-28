@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 import { posts } from '../../../drizzle/schema';
 import { buildDbClient } from '../../utils/dbClient';
+import { authOptions } from './auth/[...nextauth]';
 import { MediaSchema } from './post';
-
-export const runtime = 'edge';
 
 const commentSchema = z.object({
 	id: z.number().int().optional(),
@@ -19,44 +19,32 @@ const commentSchema = z.object({
 
 export type Comment = z.infer<typeof commentSchema>;
 
-export default async function handler(req: NextRequest) {
-	// Create redirect url
-	const addNewUrl = req.nextUrl.clone();
-	addNewUrl.pathname = '/';
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions);
+	if (!session) {
+		return res.status(401).send({
+			message: 'Not Authorized',
+		});
+	}
 
 	if (req.method !== 'POST') {
-		return NextResponse.json(
-			{
-				message: 'Incorrect Request Method - Only POST Allowed',
-			},
-			{
-				status: 502,
-			}
-		);
+		return res.status(502).send({
+			message: 'Incorrect Request Method - Only POST Allowed',
+		});
 	}
 
 	if (!req.body) {
-		return NextResponse.json(
-			{
-				message: 'No Body Provided',
-			},
-			{
-				status: 502,
-			}
-		);
+		return res.status(502).send({
+			message: 'No Body Provided',
+		});
 	}
 
-	const parsed = commentSchema.safeParse(await req.json());
+	const parsed = commentSchema.safeParse(req.body);
 
 	if (!parsed.success) {
-		return NextResponse.json(
-			{
-				message: 'Missing Required Fields',
-			},
-			{
-				status: 502,
-			}
-		);
+		return res.status(502).send({
+			message: 'Invalid Body Provided',
+		});
 	}
 
 	if (!parsed.data.id) {
@@ -66,17 +54,12 @@ export default async function handler(req: NextRequest) {
 	console.log(`[API/Comment] parsed input: ${JSON.stringify(parsed, null, 2)}`);
 
 	const db = buildDbClient();
-	const res = await db.insert(posts).values(parsed.data).returning().run();
+	const dbResponse = await db.insert(posts).values(parsed.data).returning().run();
 
-	console.log(`[API/Comment] res: ${JSON.stringify(res, null, 2)}`);
+	console.log(`[API/Comment] res: ${JSON.stringify(dbResponse, null, 2)}`);
 
-	return NextResponse.json(
-		{
-			message: 'Success',
-			data: res,
-		},
-		{
-			status: 200,
-		}
-	);
+	return res.status(200).send({
+		message: 'Success',
+		data: dbResponse,
+	});
 }
