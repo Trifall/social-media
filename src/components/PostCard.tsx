@@ -124,13 +124,18 @@ const PostCard = ({ post, user }: PostCardProps) => {
 			</div>
 			<div className='flex flex-row flex-wrap justify-between px-3 pt-3'>
 				<div className='flex flex-row gap-4 justify-center align-middle items-center'>
-					<Link
-						key={post.id}
-						href={'/post/' + post.id}
-						className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
-					>
-						<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
-					</Link>
+					<div className='flex flex-row gap-1'>
+						<Link
+							key={post.id}
+							href={'/post/' + post.id}
+							className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
+						>
+							<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
+						</Link>
+						<span className='opacity-75 pt-1'>
+							{post?.comments && post.comments.length > 0 ? post.comments.length : ''}
+						</span>
+					</div>
 					<div className='flex flex-row gap-1'>
 						<LikeButton
 							key={post.id}
