@@ -2,7 +2,6 @@ import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useState } from 'react';
-import { LikedPost } from '../../drizzle/schema';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import PostCard from '../components/PostCard';
@@ -11,12 +10,22 @@ import { Post } from './api/post';
 
 type HomeProps = {
 	posts: Post[];
-	liked_posts?: LikedPost[];
 };
 
 async function getPosts() {
 	const db = buildDbClient();
-	const postsResponse = await db.query.posts.findMany({ with: { users: true } });
+	const postsResponse = await db.query.posts.findMany({
+		with: {
+			users: {
+				columns: {
+					id: true,
+					name: true,
+					profileImage: true,
+				},
+			},
+			comments: true,
+		},
+	});
 
 	// console.log(`Posts Response: ${JSON.stringify(postsResponse, null, 2)}`);
 
