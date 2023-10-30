@@ -12,6 +12,33 @@ export const MediaSchema = z.object({
 	name: z.string().optional(),
 });
 
+/*
+export const comments = sqliteTable(
+	'comments',
+	{
+		id: integer('id').primaryKey(),
+		post_id: integer('post_id').notNull(),
+		user_id: text('user_id').notNull(),
+		content: text('content').notNull(),
+		created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+		likes: integer('likes', { mode: 'number' }).default(0),
+	},
+	(comment) => ({
+		commentIdx: index('comment_idx').on(comment.post_id),
+	})
+);
+*/
+
+const commentSchema = z.object({
+	id: z.number().int().optional(),
+	post_id: z.number().int(),
+	user_id: z.string(),
+	content: z.string(),
+	created_at: z.string().optional(),
+	likes: z.number().int().optional().default(0),
+	users: z.object({ name: z.string(), profileImage: z.string() }).optional(),
+});
+
 const postSchema = z.object({
 	id: z.number().int().optional(),
 	user_id: z.string(),
@@ -20,10 +47,12 @@ const postSchema = z.object({
 	created_at: z.string().optional(),
 	likes: z.number().int().optional().default(0),
 	users: z.object({ name: z.string(), profileImage: z.string() }).optional(),
+	comments: z.array(commentSchema).optional(),
 });
 
 export type Post = z.infer<typeof postSchema>;
 export type Media = z.infer<typeof MediaSchema>;
+export type Comment = z.infer<typeof commentSchema>;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);

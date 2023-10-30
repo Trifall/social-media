@@ -45,6 +45,7 @@ export const comments = sqliteTable(
 		user_id: text('user_id').notNull(),
 		content: text('content').notNull(),
 		created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+		likes: integer('likes', { mode: 'number' }).default(0),
 	},
 	(comment) => ({
 		commentIdx: index('comment_idx').on(comment.post_id),

@@ -1,0 +1,1 @@
+ALTER TABLE comments ADD `likes` integer DEFAULT 0;

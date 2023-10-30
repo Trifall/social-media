@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Session } from 'next-auth/core/types';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import { LikePostData } from '../pages/api/like_post';
@@ -123,9 +124,13 @@ const PostCard = ({ post, user }: PostCardProps) => {
 			</div>
 			<div className='flex flex-row flex-wrap justify-between px-3 pt-3'>
 				<div className='flex flex-row gap-4 justify-center align-middle items-center'>
-					<button className='h-min w-min items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
+					<Link
+						key={post.id}
+						href={'/post/' + post.id}
+						className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
+					>
 						<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
-					</button>
+					</Link>
 					<div className='flex flex-row gap-1'>
 						<LikeButton
 							key={post.id}
