@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { z } from 'zod';
-import { LikedPost, users } from '../../../drizzle/schema';
+import { LikedPost, posts, users } from '../../../drizzle/schema';
 import { buildDbClient } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
@@ -87,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 	}
 
-	const dbResponse = await db
+	const userDbResponse = await db
 		.update(users)
 		.set({
 			liked_posts: liked_posts_data,
@@ -95,22 +95,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		.where(eq(users.id, parsed.data.user_id))
 		.execute();
 
-	if (!dbResponse) {
+	if (!userDbResponse) {
 		return res.status(502).send({
 			message: 'Error updating user liked posts',
 		});
 	}
 
-	if (dbResponse.rowsAffected === 0) {
+	if (userDbResponse.rowsAffected === 0) {
 		return res.status(502).send({
 			message: 'Error updating user liked posts',
 		});
 	}
 
-	console.log(`[API/like_post] Operation Complete. Rows affected: ${dbResponse.rowsAffected}`);
+	const postDbResponse = await db
+		.update(posts)
+		.set({
+			likes: parsed.data.set_state ? sql`${posts.likes} + 1` : sql`${posts.likes} - 1`,
+		})
+		.where(eq(posts.id, parsed.data.post_id))
+		.execute();
+
+	if (!postDbResponse) {
+		return res.status(502).send({
+			message: 'Error updating post likes counter',
+		});
+	}
+
+	if (postDbResponse.rowsAffected === 0) {
+		return res.status(502).send({
+			message: 'Error updating post likes counter',
+		});
+	}
+
+	console.log(`[API/like_post] Operation Complete. Rows affected: ${userDbResponse.rowsAffected}`);
 
 	return res.status(200).send({
 		message: 'Success',
-		data: dbResponse,
+		data: userDbResponse,
 	});
 }

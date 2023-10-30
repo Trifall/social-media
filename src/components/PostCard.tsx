@@ -16,6 +16,7 @@ type PostCardProps = {
 
 const PostCard = ({ post, user }: PostCardProps) => {
 	const [isLiked, setIsLiked] = useState(false);
+	const [likesCount, setLikesCount] = useState(post.likes ?? 0);
 	// mutation loading state
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -70,6 +71,7 @@ const PostCard = ({ post, user }: PostCardProps) => {
 
 		if (likePostResponse.status === 200) {
 			// alert('Post liked/unliked successfully');
+			setLikesCount(!isLiked ? likesCount + 1 : likesCount - 1);
 			setIsLiked(!isLiked);
 		} else {
 			alert(
@@ -120,16 +122,19 @@ const PostCard = ({ post, user }: PostCardProps) => {
 				})}
 			</div>
 			<div className='flex flex-row flex-wrap justify-between px-3 pt-3'>
-				<div className='flex flex-row gap-2 justify-center align-middle items-center'>
+				<div className='flex flex-row gap-4 justify-center align-middle items-center'>
 					<button className='h-min w-min items-center rounded-lg bg-transparent p-0 align-middle text-black transition-all duration-500 dark:bg-transparent dark:text-white'>
 						<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
 					</button>
-					<LikeButton
-						key={post.id}
-						onClick={handleLikeButtonClicked}
-						isDisabled={isLoading || mutation?.isPending}
-						isLiked={isLiked}
-					/>
+					<div className='flex flex-row gap-1'>
+						<LikeButton
+							key={post.id}
+							onClick={handleLikeButtonClicked}
+							isDisabled={isLoading || mutation?.isPending}
+							isLiked={isLiked}
+						/>
+						<span className='opacity-75 pt-1'>{likesCount > 0 ? likesCount : ''}</span>
+					</div>
 				</div>
 				<NoSSR>
 					<div className='px-3 items-center flex justify-center'>

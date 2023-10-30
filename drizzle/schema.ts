@@ -30,7 +30,7 @@ export const posts = sqliteTable(
 		content: text('content').notNull(),
 		media: text('media', { mode: 'json' }).$type<Media[]>(),
 		created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
-		likes: integer('likes').default(0),
+		likes: integer('likes', { mode: 'number' }).default(0),
 	},
 	(post) => ({
 		postIdx: index('post_idx').on(post.user_id),
