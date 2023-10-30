@@ -2,7 +2,7 @@ import { eq, sql } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { z } from 'zod';
-import { LikedPost, posts, users } from '../../../drizzle/schema';
+import { LikedPost, comments, posts, users } from '../../../drizzle/schema';
 import { buildDbClient } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
@@ -10,6 +10,7 @@ const likePostSchema = z.object({
 	post_id: z.number().int(),
 	user_id: z.string(),
 	set_state: z.boolean(),
+	is_comment: z.boolean().optional().default(false),
 });
 
 export type LikePostData = z.infer<typeof likePostSchema>;
@@ -107,24 +108,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		});
 	}
 
-	const postDbResponse = await db
-		.update(posts)
-		.set({
-			likes: parsed.data.set_state ? sql`${posts.likes} + 1` : sql`${posts.likes} - 1`,
-		})
-		.where(eq(posts.id, parsed.data.post_id))
-		.execute();
+	if (!parsed.data.is_comment) {
+		const postDbResponse = await db
+			.update(posts)
+			.set({
+				likes: parsed.data.set_state ? sql`${posts.likes} + 1` : sql`${posts.likes} - 1`,
+			})
+			.where(eq(posts.id, parsed.data.post_id))
+			.execute();
 
-	if (!postDbResponse) {
-		return res.status(502).send({
-			message: 'Error updating post likes counter',
-		});
-	}
+		if (!postDbResponse) {
+			return res.status(502).send({
+				message: 'Error updating post likes counter',
+			});
+		}
 
-	if (postDbResponse.rowsAffected === 0) {
-		return res.status(502).send({
-			message: 'Error updating post likes counter',
-		});
+		if (postDbResponse.rowsAffected === 0) {
+			return res.status(502).send({
+				message: 'Error updating post likes counter',
+			});
+		}
+	} else {
+		const commentDbResponse = await db
+			.update(comments)
+			.set({
+				likes: parsed.data.set_state ? sql`${comments.likes} + 1` : sql`${comments.likes} - 1`,
+			})
+			.where(eq(comments.id, parsed.data.post_id))
+			.execute();
+
+		if (!commentDbResponse) {
+			return res.status(502).send({
+				message: 'Error updating comment likes counter',
+			});
+		}
+
+		if (commentDbResponse.rowsAffected === 0) {
+			return res.status(502).send({
+				message: 'Error updating comment likes counter',
+			});
+		}
 	}
 
 	console.log(`[API/like_post] Operation Complete. Rows affected: ${userDbResponse.rowsAffected}`);

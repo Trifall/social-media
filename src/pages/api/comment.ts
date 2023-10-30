@@ -4,14 +4,12 @@ import { z } from 'zod';
 import { posts } from '../../../drizzle/schema';
 import { buildDbClient } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
-import { MediaSchema } from './post';
 
 const commentSchema = z.object({
 	id: z.number().int().optional(),
 	user_id: z.string(),
 	post_id: z.number().int(),
 	content: z.string(),
-	media: z.array(MediaSchema).max(4).optional(),
 	created_at: z.string().optional(),
 	likes: z.number().int().optional().default(0),
 	users: z.object({ name: z.string(), profileImage: z.string() }).optional(),

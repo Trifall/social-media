@@ -1,12 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useMemo } from 'react';
 import { LikedPost } from '../../../drizzle/schema';
+import CommentCard from '../../components/CommentCard';
 import PostCard from '../../components/PostCard';
 import { buildDbClient } from '../../utils/dbClient';
-import { Post } from '../api/post';
+import { Comment, Post } from '../api/post';
 
 type PostPageProps = {
 	post?: Post;
@@ -70,7 +70,7 @@ export default function PostPage({ post }: PostPageProps) {
 				return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
 			}
 			return b.likes - a.likes;
-		});
+		}) as Comment[];
 	}, [post?.comments]);
 
 	if (!post) {
@@ -84,30 +84,7 @@ export default function PostPage({ post }: PostPageProps) {
 			</Head>
 			<div className='px-4 flex flex-col gap-2'>
 				<PostCard post={post} user={user} />
-
-				{comments?.map((comment) => (
-					<div key={comment.id} className='flex flex-col gap-2 bg-gray-800 p-4 rounded-xl'>
-						<div className='flex flex-row gap-2'>
-							<div className='relative h-8 w-8'>
-								<Image
-									sizes='100%'
-									className='rounded-full object-cover m-0'
-									fill
-									quality={100}
-									alt='profile'
-									src={comment.users?.profileImage ?? ''}
-								/>
-							</div>
-							<div className='flex flex-col gap-1'>
-								<div className='flex flex-row items-center gap-2'>
-									<div className='font-bold'>{comment.users?.name}</div>
-									<div className='text-gray-500'>{comment.created_at}</div>
-								</div>
-								<div>{comment.content}</div>
-							</div>
-						</div>
-					</div>
-				))}
+				{comments?.map((comment) => <CommentCard comment={comment} key={comment.id} user={user} />)}
 			</div>
 		</>
 	);
@@ -116,7 +93,7 @@ export default function PostPage({ post }: PostPageProps) {
 export const getServerSideProps = async ({ params }: GetServerSidePropsContext) => {
 	console.log(`[gSSP/getPost] params: ${JSON.stringify(params, null, 2)}`);
 
-	if (!params?.slug) {
+	if (!params?.id) {
 		return {
 			props: { post: null },
 		};
@@ -125,7 +102,7 @@ export const getServerSideProps = async ({ params }: GetServerSidePropsContext) 
 	let post_id: number;
 
 	try {
-		post_id = parseInt(params.slug as string);
+		post_id = parseInt(params.id as string);
 		console.log(`post_id: ${post_id}`);
 		if (Number.isNaN(post_id)) {
 			throw new Error('[gSSP/getPost] post_id is NaN');
