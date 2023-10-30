@@ -15,6 +15,7 @@ type HomeProps = {
 async function getPosts() {
 	const db = buildDbClient();
 	const postsResponse = await db.query.posts.findMany({
+		orderBy: (posts, { desc }) => [desc(posts.created_at)],
 		with: {
 			users: {
 				columns: {
