@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaGithub } from 'react-icons/fa';
-import { IoMdKey, IoMdSettings } from 'react-icons/io';
+import { IoMdKey } from 'react-icons/io';
 
 import { Dialog, Popover, Transition } from '@headlessui/react';
 
@@ -25,22 +25,20 @@ const Header = () => {
 			<SignInModal signInModalOpen={signInModalOpen} setSignInModalOpen={setSignInModalOpen} />
 			<div className='flex justify-between items-center w-full mx-2 sm:mx-4'>
 				<div className='flex text-base font-medium gap-2 items-center'>
-					{navLinks.map(({ title, href, icon, isProtected }) =>
-						isProtected && status !== 'authenticated' ? null : (
-							<Link
-								key={href}
-								href={href}
-								className={
-									router.pathname == href
-										? 'flex gap-2 dark:bg-neutral-600 dark:hover:bg-gray-500 hover:bg-neutral-400 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-										: 'flex gap-2 dark:hover:bg-gray-500  dark:text-white hover:bg-neutral-400 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-								}
-							>
-								{icon}
-								<span className='hidden lg:inline'>{title}</span>
-							</Link>
-						)
-					)}
+					{navLinks.map(({ title, href, icon }) => (
+						<Link
+							key={href}
+							href={href}
+							className={
+								router.pathname == href
+									? 'flex gap-2 dark:bg-neutral-600 dark:hover:bg-gray-500 hover:bg-neutral-400 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+									: 'flex gap-2 dark:hover:bg-gray-500  dark:text-white hover:bg-neutral-400 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+							}
+						>
+							{icon}
+							<span className='hidden lg:inline'>{title}</span>
+						</Link>
+					))}
 				</div>
 				<div className='flex gap-2'>
 					<ThemeButton />
@@ -192,12 +190,6 @@ const navLinks = [
 		title: 'Home',
 		href: '/',
 		icon: <AiFillHome className='h-5 w-5' />,
-	},
-	{
-		title: 'Protected',
-		href: '/protected',
-		isProtected: true,
-		icon: <IoMdSettings className='h-5 w-5' />,
 	},
 ];
 
