@@ -110,15 +110,24 @@ const PostCard = ({ post, user }: PostCardProps) => {
 				<h1 className='text-xl font-bold text-black dark:text-white'>{post.users?.name}</h1>
 			</div>
 			<div className='px-3 pt-3'>{post.content}</div>
-			<div className='flex flex-wrap justify-evenly gap-4 px-3 pt-3'>
+			<div className='flex flex-wrap justify-evenly gap-4 px-3 pt-3 relative'>
 				{post.media?.map((media) => {
 					return (
-						<img
-							src={media.url}
+						<div
 							key={media.id}
-							alt='media'
-							className='max-w-sm flex-auto rounded-lg border border-neutral-400 object-contain p-3 dark:border-neutral-50'
-						/>
+							className='max-w-md flex-auto rounded-lg border border-neutral-400 p-3 dark:border-neutral-50 relative'
+						>
+							<Image
+								src={media.url}
+								loading='lazy'
+								alt='media'
+								height={'0'}
+								width={'0'}
+								sizes='100%'
+								className='relative rounded-lg'
+								style={{ objectFit: 'contain', aspectRatio: '1/1', width: '100%', height: '100%' }}
+							/>
+						</div>
 					);
 				})}
 			</div>
