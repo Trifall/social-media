@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { signIn, useSession } from 'next-auth/react';
+import Head from 'next/head';
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { IoMdKey } from 'react-icons/io';
@@ -27,6 +28,9 @@ const Login = () => {
 
 	return (
 		<>
+			<Head>
+				<title>Login | Social Media</title>
+			</Head>
 			<div className='absolute w-full h-full bg-gray-600 blur-sm'>
 				<Image src='/images/login_bg.jpeg' alt='' fill />
 			</div>
