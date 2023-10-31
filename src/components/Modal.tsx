@@ -5,14 +5,17 @@ import { Dialog, Transition } from '@headlessui/react';
 export default function Modal({
 	isOpen,
 	children,
+	closeModal,
+	shouldCloseOnOverlayClick = false,
 }: {
 	isOpen: boolean;
 	closeModal: () => void;
 	children: React.ReactNode;
+	shouldCloseOnOverlayClick?: boolean;
 }) {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
-			<Dialog as='div' className='relative z-10' onClose={() => {}}>
+			<Dialog as='div' className='relative z-10' onClose={() => (shouldCloseOnOverlayClick ? closeModal() : null)}>
 				<Transition.Child
 					as={Fragment}
 					enter='ease-out duration-100'
