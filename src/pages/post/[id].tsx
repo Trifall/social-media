@@ -79,6 +79,8 @@ export default function PostPage({ post }: PostPageProps) {
 		return <div>Post not found</div>;
 	}
 
+	console.log(`[PostPage] post: ${JSON.stringify(post, null, 2)}`);
+
 	const handleReplyClick = () => {
 		console.log(`handleReplyClick`);
 		setCommentModalOpen(true);
