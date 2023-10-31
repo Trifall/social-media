@@ -194,7 +194,7 @@ const CreatePostModal = ({
 							<div className='px-4 py-2 gap-2 flex flex-col bg-gray-800 rounded-lg'>
 								<label>Post Content</label>
 								<textarea
-									disabled={isComplete}
+									disabled={isComplete || mutation.isSuccess || mutation.isPending}
 									maxLength={500}
 									style={{ resize: 'none' }}
 									className='h-96'
@@ -210,7 +210,7 @@ const CreatePostModal = ({
 										{...field}
 										{...fieldState}
 										permittedFileInfo={permittedFileInfo}
-										disabled={isComplete}
+										disabled={isComplete || mutation.isSuccess || mutation.isPending}
 									/>
 								)}
 							/>
