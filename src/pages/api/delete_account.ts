@@ -12,6 +12,8 @@ const deleteAccountSchema = z.object({
 
 export type DeleteAccountRequestData = z.infer<typeof deleteAccountSchema>;
 
+// TODO: need to test this
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);
 	if (!session) {
