@@ -1,13 +1,23 @@
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Session } from 'next-auth/core/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
+import { AiFillWarning } from 'react-icons/ai';
+import { BsTrashFill } from 'react-icons/bs';
+import { FiMoreHorizontal } from 'react-icons/fi';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
+import { IoMdCheckmark } from 'react-icons/io';
+import { DeleteAccountPostData } from '../pages/account';
+import { DeletePostData } from '../pages/api/delete_post';
 import { LikePostData } from '../pages/api/like_post';
 import { Post } from '../pages/api/post';
+import Button from './Button';
 import LikeButton from './LikeButton';
+import Modal from './Modal';
 import NoSSR from './NoSSR';
 
 type PostCardProps = {
@@ -20,7 +30,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [likesCount, setLikesCount] = useState(post.likes ?? 0);
 	// mutation loading state
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLikeLoading, setIsLikeLoading] = useState(false);
 
 	useEffect(() => {
 		if (!user) {
@@ -35,7 +45,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 		// console.log(`user object: ${JSON.stringify(user, null, 2)}`);
 	}, [post.id, user, user?.liked_posts]);
 
-	const mutation = useMutation({
+	const likePostMutation = useMutation({
 		mutationFn: (data: LikePostData) => {
 			return axios.post('/api/like_post', data);
 		},
@@ -60,10 +70,10 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 			return;
 		}
 
-		setIsLoading(true);
+		setIsLikeLoading(true);
 
 		// make a request to the api to add liked post to user
-		const likePostResponse = await mutation.mutateAsync({
+		const likePostResponse = await likePostMutation.mutateAsync({
 			post_id: post.id,
 			user_id: user?.id,
 			set_state: !isLiked,
@@ -80,7 +90,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 				`Error: Failed to like/unlike post. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
 			);
 		}
-		setIsLoading(false);
+		setIsLikeLoading(false);
 	};
 
 	const dateString = post.created_at
@@ -97,6 +107,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 
 	return (
 		<div className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800'>
+			<PostPopover post={post} user={user} />
 			<div className='flex items-center gap-5 px-3 pt-3'>
 				<div className='relative h-12 w-12'>
 					<Image
@@ -160,7 +171,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 						<LikeButton
 							key={post.id}
 							onClick={handleLikeButtonClicked}
-							isDisabled={isLoading || mutation?.isPending}
+							isDisabled={isLikeLoading || likePostMutation?.isPending}
 							isLiked={isLiked}
 						/>
 						<span className='opacity-75 pt-1'>{likesCount > 0 ? likesCount : ''}</span>
@@ -177,3 +188,180 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 };
 
 export default PostCard;
+
+const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => {
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+	const [isRequestComplete, setIsRequestComplete] = useState(false);
+
+	const router = useRouter();
+
+	const deleteMutation = useMutation({
+		mutationFn: (data: DeleteAccountPostData) => {
+			return axios.post('/api/delete_post', data);
+		},
+		onSuccess: () => {
+			console.log('Delete post mutation success');
+		},
+	});
+
+	const handleClose = async (e?: React.FormEvent) => {
+		e?.preventDefault();
+		// sleep for 250 ms to allow for animation to finish
+		setIsDeleteModalOpen(false);
+		await new Promise((r) => setTimeout(r, 250));
+		if (isRequestComplete) {
+			router.replace(router.asPath);
+			setIsRequestComplete(false);
+		}
+		setIsDeleteLoading(false);
+		deleteMutation.reset();
+	};
+
+	const handleConfirmDelete = async (e?: React.FormEvent) => {
+		e?.preventDefault();
+
+		// console.log('Like button clicked');
+		if (!user || !user.id) {
+			alert('Error: User not logged in');
+			return;
+		}
+
+		setIsDeleteLoading(true);
+
+		// make a request to the api to add liked post to user
+		const deletePostResponse = await deleteMutation.mutateAsync({
+			user_id: user?.id,
+			post_id: post.id,
+		} as DeletePostData);
+
+		// console.log(`likePostResponse: ${JSON.stringify(likePostResponse, null, 2)}`);
+
+		if (deletePostResponse.status === 200) {
+			// alert('Post deleted successfully');
+		} else {
+			alert(
+				`Error: Failed to delete account. Status code: ${deletePostResponse.status}, message: ${deletePostResponse.data?.message}`
+			);
+		}
+		setIsDeleteLoading(false);
+		setIsRequestComplete(true);
+	};
+
+	if (!post) return null;
+	if (!user) return null;
+	if (user.id !== post.user_id) return null;
+
+	return (
+		<div className='relative'>
+			<Popover className='absolute right-0 top-0 dark:hover:bg-neutral-600 hover:bg-neutral-300 rounded-lg p-2 transition-all duration-500'>
+				{() => (
+					<>
+						<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>
+							<div className='relative h-8 w-8'>
+								<FiMoreHorizontal className='h-8 w-8 p-0 hover:fill-red-500' />
+							</div>
+						</Popover.Button>
+
+						<Transition
+							as={Fragment}
+							enter='transition ease-out duration-200'
+							enterFrom='opacity-0 translate-y-1'
+							enterTo='opacity-100 translate-y-0'
+							leave='transition ease-in duration-150'
+							leaveFrom='opacity-100 translate-y-0'
+							leaveTo='opacity-0 translate-y-1'
+						>
+							<Popover.Panel className='absolute right-0 mt-3 max-w-xs w-[200px] lg:max-w-3xl z-20 bg-gray-800 rounded-xl'>
+								<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 p-2'>
+									<div className='relative whitespace-nowrap flex gap-8  p-4 flex-col'>
+										<button
+											onClick={() => setIsDeleteModalOpen(true)}
+											className='-m-3 flex items-center bg-gray-900 rounded-lg px-4 py-2 transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
+										>
+											<BsTrashFill className='h-5 w-5 text-white pr-2 fill-red-500' />
+											<p className='text-sm text-red-500'>Delete Post</p>
+										</button>
+									</div>
+								</div>
+							</Popover.Panel>
+						</Transition>
+					</>
+				)}
+			</Popover>
+			<Modal
+				isOpen={isDeleteModalOpen}
+				closeModal={handleClose}
+				shouldCloseOnOverlayClick={!isDeleteLoading}
+				skipExitAnimation
+			>
+				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl bg-gray-700 p-6 text-left align-middle shadow-xl transition-all'>
+					{!user ? (
+						<div className='flex flex-col items-center gap-3'>
+							<div className='p-2 rounded-full'>
+								<AiFillWarning className='h-10 w-10 text-red-600' />
+							</div>
+							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+								You must be signed in to delete a post.
+							</Dialog.Title>
+							<div>
+								<Button onClick={handleClose} className={`border-green-400 border-2 rounded-lg`}>
+									Close
+								</Button>
+							</div>
+						</div>
+					) : (
+						<div className='flex flex-col items-center gap-3'>
+							<div className='p-2 rounded-full'>
+								{isRequestComplete && deleteMutation.isSuccess ? (
+									<IoMdCheckmark className='h-10 w-10 text-green-500' />
+								) : (
+									<AiFillWarning className='h-10 w-10 text-red-600' />
+								)}
+							</div>
+							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+								{isRequestComplete && deleteMutation.isSuccess ? (
+									<span className='text-green-500 font-bold'>Post deleted successfully!</span>
+								) : deleteMutation.isError ? (
+									<span className='text-red-500 font-bold'>
+										Error:{' '}
+										{deleteMutation.error?.message ? deleteMutation.error.message : `An unexpected error has occured.`}
+									</span>
+								) : (
+									<span>
+										Are you sure you want to <span className='text-red-500 font-bold'>delete</span> this post? This
+										action is <span className='text-red-500 font-bold'>irreversible</span>.
+									</span>
+								)}
+							</Dialog.Title>
+							<div className='flex gap-2'>
+								<Button
+									onClick={handleConfirmDelete}
+									isDisabled={isDeleteLoading || isRequestComplete}
+									isLoading={isDeleteLoading || deleteMutation.status === 'pending'}
+									isSuccess={deleteMutation.status === 'success'}
+									isError={deleteMutation.status === 'error'}
+									className={`text-red-500 hover:bg-red-900 hover:text-white border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center`}
+								>
+									Yes
+								</Button>
+								<Button
+									onClick={handleClose}
+									isDisabled={isDeleteLoading || isRequestComplete}
+									className={`text-green-500 hover:bg-green-900 hover:text-white border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center`}
+								>
+									No
+								</Button>
+							</div>
+							{isRequestComplete ? (
+								<Button onClick={handleClose} isDisabled={isDeleteLoading} className={` border-2 rounded-lg`}>
+									Close
+								</Button>
+							) : null}
+						</div>
+					)}
+				</Dialog.Panel>
+			</Modal>
+		</div>
+	);
+};

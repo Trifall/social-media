@@ -12,7 +12,7 @@ import Button from '../components/Button';
 import Modal from '../components/Modal';
 import { authOptions } from './api/auth/[...nextauth]';
 
-type DeleteAccountPostData = {
+export type DeleteAccountPostData = {
 	user_id: string;
 };
 

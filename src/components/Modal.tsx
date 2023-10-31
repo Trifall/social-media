@@ -7,23 +7,25 @@ export default function Modal({
 	children,
 	closeModal,
 	shouldCloseOnOverlayClick = false,
+	skipExitAnimation = false,
 }: {
 	isOpen: boolean;
 	closeModal: () => void;
 	children: React.ReactNode;
 	shouldCloseOnOverlayClick?: boolean;
+	skipExitAnimation?: boolean;
 }) {
 	return (
-		<Transition appear show={isOpen} as={Fragment}>
+		<Transition show={isOpen} as={Fragment}>
 			<Dialog as='div' className='relative z-10' onClose={() => (shouldCloseOnOverlayClick ? closeModal() : null)}>
 				<Transition.Child
 					as={Fragment}
 					enter='ease-out duration-100'
 					enterFrom='opacity-0'
 					enterTo='opacity-100'
-					leave='ease-in duration-200'
-					leaveFrom='opacity-100'
-					leaveTo='opacity-0'
+					leave={skipExitAnimation ? `` : `ease-in duration-200`}
+					leaveFrom={skipExitAnimation ? `` : `opacity-100`}
+					leaveTo={skipExitAnimation ? `` : `opacity-0`}
 				>
 					<div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm' />
 				</Transition.Child>
@@ -35,9 +37,9 @@ export default function Modal({
 							enter='ease-out duration-100'
 							enterFrom='opacity-0 scale-95'
 							enterTo='opacity-100 scale-100'
-							leave='ease-in duration-200'
-							leaveFrom='opacity-100 scale-100'
-							leaveTo='opacity-0 scale-95'
+							leave={skipExitAnimation ? `` : `ease-in duration-200`}
+							leaveFrom={skipExitAnimation ? `` : `opacity-100 scale-100`}
+							leaveTo={skipExitAnimation ? `` : `opacity-0 scale-95`}
 						>
 							{children}
 						</Transition.Child>
