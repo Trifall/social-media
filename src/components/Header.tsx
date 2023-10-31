@@ -129,8 +129,8 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 
 const profileLinks = [
 	{
-		name: 'Settings',
-		href: '/settings',
+		name: 'Account',
+		href: '/account',
 	},
 	{
 		name: 'Sign out',

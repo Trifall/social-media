@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { authOptions } from './api/auth/[...nextauth]';
 
-const SettingsPage = () => {
+const AccountPage = () => {
 	// Render the page based on the session state
 	const session = useSession();
 
@@ -18,7 +18,7 @@ const SettingsPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Settings | Social Media</title>
+				<title>Account | Social Media</title>
 			</Head>
 			<div className='py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6'>
 				<div className='mx-auto max-w-screen-sm text-center'>
@@ -57,4 +57,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	return { props: { session: session, isFixedFooter: true } };
 }
 
-export default SettingsPage;
+export default AccountPage;
