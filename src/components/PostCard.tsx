@@ -13,9 +13,10 @@ import NoSSR from './NoSSR';
 type PostCardProps = {
 	post: Post;
 	user?: Session['user'];
+	onReplyClick?: () => void;
 };
 
-const PostCard = ({ post, user }: PostCardProps) => {
+const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [likesCount, setLikesCount] = useState(post.likes ?? 0);
 	// mutation loading state
@@ -131,16 +132,26 @@ const PostCard = ({ post, user }: PostCardProps) => {
 					);
 				})}
 			</div>
-			<div className='flex flex-row flex-wrap justify-between px-3 pt-3'>
+			<div className='flex flex-row flex-wrap justify-between px-2 pt-3'>
 				<div className='flex flex-row gap-4 justify-center align-middle items-center'>
 					<div className='flex flex-row gap-1'>
-						<Link
-							key={post.id}
-							href={'/post/' + post.id}
-							className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
-						>
-							<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
-						</Link>
+						{!onReplyClick ? (
+							<Link
+								key={post.id}
+								href={'/post/' + post.id}
+								className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
+							>
+								<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-blue-500' />
+							</Link>
+						) : (
+							<button
+								key={post.id}
+								onClick={onReplyClick}
+								className={'flex gap-2 rounded-lg transition-all duration-500 items-center'}
+							>
+								<HiOutlineChatBubbleOvalLeft className='h-8 w-8 p-0 hover:fill-red-500' />
+							</button>
+						)}
 						<span className='opacity-75 pt-1'>
 							{post?.comments && post.comments.length > 0 ? post.comments.length : ''}
 						</span>

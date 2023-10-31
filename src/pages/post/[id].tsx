@@ -1,9 +1,10 @@
 import { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { LikedPost } from '../../../drizzle/schema';
 import CommentCard from '../../components/CommentCard';
+import CommentsModal from '../../components/CommentsModal';
 import PostCard from '../../components/PostCard';
 import { buildDbClient } from '../../utils/dbClient';
 import { Comment, Post } from '../api/post';
@@ -54,6 +55,7 @@ async function getPost(post_id: number) {
 }
 
 export default function PostPage({ post }: PostPageProps) {
+	const [commentModalOpen, setCommentModalOpen] = useState(false);
 	// auth hook
 	const session = useSession();
 	// get user object
@@ -77,13 +79,23 @@ export default function PostPage({ post }: PostPageProps) {
 		return <div>Post not found</div>;
 	}
 
+	const handleReplyClick = () => {
+		console.log(`handleReplyClick`);
+		setCommentModalOpen(true);
+	};
+
 	return (
 		<>
 			<Head>
 				<title>{post.users?.name ? post.users?.name + `'s Post` : `Social Media Post`}</title>
 			</Head>
 			<div className='px-4 flex flex-col gap-2'>
-				<PostCard post={post} user={user} />
+				<CommentsModal
+					post_id={post.id!}
+					commentModalOpen={commentModalOpen}
+					setCommentModalOpen={setCommentModalOpen}
+				/>
+				<PostCard post={post} user={user} onReplyClick={handleReplyClick} />
 				{comments?.map((comment) => <CommentCard comment={comment} key={comment.id} user={user} />)}
 			</div>
 		</>
