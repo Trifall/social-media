@@ -191,7 +191,7 @@ const CreatePostModal = ({
 						</div>
 						{/* <div className='w-full border-t border-gray-400 my-4' /> */}
 						<div className='mt-4 flex flex-col gap-4'>
-							<div className='px-4 py-2 flex flex-col bg-gray-800 rounded-lg'>
+							<div className='px-4 py-2 gap-2 flex flex-col bg-gray-800 rounded-lg'>
 								<label>Post Content</label>
 								<textarea
 									disabled={isComplete}
