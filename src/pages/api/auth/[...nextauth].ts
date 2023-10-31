@@ -4,7 +4,7 @@
 import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import { LikedPost, users } from '../../../../drizzle/schema';
-import { buildDbClient } from '../../../utils/dbClient';
+import { db } from '../../../utils/dbClient';
 
 declare module 'next-auth' {
 	interface Session {
@@ -28,8 +28,6 @@ export const authOptions: NextAuthOptions = {
 		async signIn(user) {
 			const session = user as any;
 			try {
-				const db = await buildDbClient();
-
 				const user = await db.query.users.findFirst({
 					where: (users, { eq }) => eq(users.id, session.user.id.toString()),
 				});
@@ -82,9 +80,8 @@ export const authOptions: NextAuthOptions = {
 			(session as any).user = token.user;
 
 			try {
-				const db = await buildDbClient();
 				const likedPostsResponse = await db.query.users.findMany({
-					where: (users, { eq }) => eq(users.id, session.user.id),
+					where: (users, { eq }: any) => eq(users.id, session.user.id),
 					columns: {
 						liked_posts: true,
 					},

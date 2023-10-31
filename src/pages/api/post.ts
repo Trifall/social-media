@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 import { posts } from '../../../drizzle/schema';
-import { buildDbClient } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
+import { db } from '../../utils/dbClient';
 
 export const MediaSchema = z.object({
 	id: z.string().optional(),
@@ -88,7 +88,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	console.log(`[API/Post] parsed input: ${JSON.stringify(parsed, null, 2)}`);
 
-	const db = buildDbClient();
 	const dbResponse = await db.insert(posts).values(parsed.data).returning().run();
 
 	console.log(`[API/Post] dbResponse: ${JSON.stringify(dbResponse, null, 2)}`);

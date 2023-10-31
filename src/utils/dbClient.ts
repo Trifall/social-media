@@ -7,16 +7,16 @@ interface Env {
 	TURSO_DB_URL?: string;
 }
 
-export function buildDbClient() {
-	const url = (process.env as unknown as Env).TURSO_DB_URL?.trim();
-	if (url === undefined) {
-		throw new Error('TURSO_DB_URL is not defined');
-	}
-
-	const authToken = (process.env as unknown as Env).TURSO_DB_AUTH_TOKEN?.trim();
-	if (authToken === undefined) {
-		throw new Error('TURSO_DB_AUTH_TOKEN is not defined');
-	}
-
-	return drizzle(createClient({ url, authToken }), { schema });
+const url = (process.env as unknown as Env).TURSO_DB_URL?.trim();
+if (url === undefined) {
+	throw new Error('TURSO_DB_URL is not defined');
 }
+
+const authToken = (process.env as unknown as Env).TURSO_DB_AUTH_TOKEN?.trim();
+if (authToken === undefined) {
+	throw new Error('TURSO_DB_AUTH_TOKEN is not defined');
+}
+
+export const drizzleClient = createClient({ url, authToken });
+
+export const db = drizzle(drizzleClient, { schema });

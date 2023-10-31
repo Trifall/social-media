@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { z } from 'zod';
 import { LikedPost, comments, posts, users } from '../../../drizzle/schema';
-import { buildDbClient } from '../../utils/dbClient';
+import { db } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
 const likePostSchema = z.object({
@@ -51,7 +51,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		});
 	}
 
-	const db = buildDbClient();
 	const liked_posts_data: LikedPost[] = [];
 
 	const likedPostsResponse = await db.query.users.findMany({

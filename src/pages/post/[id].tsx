@@ -6,7 +6,7 @@ import { LikedPost } from '../../../drizzle/schema';
 import CommentCard from '../../components/CommentCard';
 import CommentsModal from '../../components/CommentsModal';
 import PostCard from '../../components/PostCard';
-import { buildDbClient } from '../../utils/dbClient';
+import { db } from '../../utils/dbClient';
 import { Comment, Post } from '../api/post';
 
 type PostPageProps = {
@@ -15,8 +15,6 @@ type PostPageProps = {
 };
 
 async function getPost(post_id: number) {
-	const db = buildDbClient();
-
 	const postResponse = await db.query.posts.findFirst({
 		where: (posts, { eq }) => eq(post_id as any, posts.id),
 		with: {

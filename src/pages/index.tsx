@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import PostCard from '../components/PostCard';
-import { buildDbClient } from '../utils/dbClient';
+import { db } from '../utils/dbClient';
 import { Post } from './api/post';
 
 type HomeProps = {
@@ -13,7 +13,6 @@ type HomeProps = {
 };
 
 async function getPosts() {
-	const db = buildDbClient();
 	const postsResponse = await db.query.posts.findMany({
 		orderBy: (posts, { desc }) => [desc(posts.created_at)],
 		with: {

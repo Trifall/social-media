@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { UTApi } from 'uploadthing/server';
 import { z } from 'zod';
 import { posts } from '../../../drizzle/schema';
-import { buildDbClient } from '../../utils/dbClient';
+import { db } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
 const deletePostSchema = z.object({
@@ -51,8 +51,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	console.log(`[API/Delete Post] parsed input: ${JSON.stringify(parsed, null, 2)}`);
-
-	const db = buildDbClient();
 
 	// get the post to retrieve the user_id and media
 	const postDbResponse = await db.query.posts.findFirst({
