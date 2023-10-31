@@ -104,7 +104,7 @@ const CreatePostModal = ({
 			const uploadFilesResponse: UploadFileResponse[] | undefined = await startUpload(data.media);
 			if (uploadFilesResponse) {
 				// console.log(`sub uploadFilesResponse ${JSON.stringify(uploadFilesResponse, null, 2)}`);
-				alert(`File upload complete`);
+				// alert(`File upload complete`);
 
 				const mediaURLs: Media[] = uploadFilesResponse.map((file) => ({
 					id: file.key,
