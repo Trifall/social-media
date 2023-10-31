@@ -81,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			try {
 				console.log(`[API/Delete Post] Deleting Media: ${JSON.stringify(mediaIDs, null, 2)}`);
 				const deleteFilesResponse = await utapi.deleteFiles(mediaIDs);
-				console.log(`[API/Delete Post] deleteFilesResponse: ${deleteFilesResponse}`);
+				console.log(`[API/Delete Post] deleteFilesResponse: ${JSON.stringify(deleteFilesResponse, null, 2)}`);
 			} catch (e) {
 				console.log(`[API/Delete Post] error deleting media: ${JSON.stringify(e, null, 2)}`);
 				return res.status(502).send({
