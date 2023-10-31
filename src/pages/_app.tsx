@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 export default function App({
 	Component,
-	pageProps: { session, showHeader = true, showFooter = true, ...pageProps },
+	pageProps: { session, showHeader = true, showFooter = true, isFixedFooter = false, ...pageProps },
 }: AppProps) {
 	return (
 		<ThemeProvider attribute='class'>
@@ -19,7 +19,7 @@ export default function App({
 					{showHeader && <Header />}
 					<Component {...pageProps} />
 
-					{showFooter && <Footer />}
+					{showFooter && <Footer isFixed={isFixedFooter} />}
 				</QueryClientProvider>
 			</SessionProvider>
 		</ThemeProvider>
