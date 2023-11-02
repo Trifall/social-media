@@ -77,7 +77,7 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 	};
 
 	return (
-		<div key={comment.id} className='flex flex-col gap-2 bg-gray-800 p-4 rounded-xl'>
+		<div key={comment.id} className='flex flex-col gap-2 bg-inherit bg-neutral-200  dark:bg-neutral-800 p-4 rounded-xl'>
 			<div className='flex flex-row gap-2'>
 				<div className='relative h-8 w-8'>
 					{comment.users?.profileImage ? (
@@ -90,7 +90,7 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 							src={comment.users?.profileImage}
 						/>
 					) : (
-						<AiOutlineUser className='h-12 w-12 p-0 m-0 rounded-full' />
+						<AiOutlineUser className='h-8 w-8 p-0 m-0 rounded-full' />
 					)}
 				</div>
 				<div>
