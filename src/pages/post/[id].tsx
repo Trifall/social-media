@@ -91,13 +91,14 @@ export default function PostPage({ post, newSession }: PostPageProps) {
 			<Head>
 				<title>{post.users?.name ? post.users?.name + `'s Post` : `Social Media Post`}</title>
 			</Head>
-			<div className='px-4 flex flex-col gap-2'>
+			<div className='flex flex-col gap-2 full items-center'>
 				<CommentsModal
 					post_id={post.id!}
 					commentModalOpen={commentModalOpen}
 					setCommentModalOpen={setCommentModalOpen}
 				/>
 				<PostCard post={post} user={user} onReplyClick={handleReplyClick} />
+				<div className='w-full h-[1px] bg-black dark:bg-white'></div>
 				{comments?.map((comment) => <CommentCard comment={comment} key={comment.id} user={user} />)}
 			</div>
 		</>

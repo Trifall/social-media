@@ -54,16 +54,22 @@ export default function Home({ posts }: HomeProps) {
 			</Head>
 			<main className='flex items-center justify-center bg-inherit'>
 				<CreatePostModal createPostModalOpen={createPostModalOpen} setCreatePostModalOpen={setCreatePostModalOpen} />
-				<div className='flex max-w-[80vw] items-center justify-center lg:mb-0 lg:text-left'>
-					<div className='relative flex flex-col items-center gap-4 overflow-y-scroll no-scrollbar'>
+				<div className='flex w-full items-center justify-center lg:mb-0 lg:text-left'>
+					<div className='relative flex flex-col items-center overflow-y-scroll no-scrollbar'>
 						<Button
-							className='w-48 items-center rounded-lg dark:hover:bg-secondary-hover dark:bg-secondary-bg  hover:bg-secondary-hover dark:text-white bg-light-primary-fg border-2 border-secondary-bg text-black px-4 py-3 transition-all duration-500 lg:px-3 lg:py-2'
+							className='w-48 items-center rounded-lg dark:hover:bg-secondary-hover dark:bg-secondary-bg  hover:bg-secondary-hover dark:text-white bg-light-primary-fg border-2 border-secondary-bg text-black px-4 py-3 mb-4 transition-all duration-500 lg:px-3 lg:py-2'
 							onClick={() => setCreatePostModalOpen(true)}
 						>
 							Create Post
 						</Button>
+						<div className='w-full h-[1px] bg-black dark:bg-white'></div>
 						{posts.map((post) => {
-							return <PostCard post={post} key={post.id} user={user} />;
+							return (
+								<div key={post.id} className='flex w-screen justify-center items-center flex-col'>
+									<PostCard post={post} user={user} />
+									<div className='w-full h-[1px] bg-black dark:bg-white'></div>
+								</div>
+							);
 						})}
 					</div>
 				</div>

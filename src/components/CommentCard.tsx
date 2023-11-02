@@ -75,9 +75,23 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 		}
 		setIsLoading(false);
 	};
+	const dateString = comment.created_at
+		? new Date(comment.created_at).toLocaleTimeString('en-US', {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric',
+				weekday: 'long',
+				hour: '2-digit',
+				minute: '2-digit',
+				timeZoneName: 'short',
+		  })
+		: 'N/A';
 
 	return (
-		<div key={comment.id} className='flex flex-col gap-2 bg-inherit bg-neutral-200  dark:bg-neutral-800 p-4 rounded-xl'>
+		<div
+			key={comment.id}
+			className='flex flex-col gap-2 bg-inherit bg-neutral-200  dark:bg-neutral-800 p-4 rounded-xl min-w-[350px] max-w-[85%]'
+		>
 			<div className='flex flex-row gap-2'>
 				<div className='relative h-8 w-8'>
 					{comment.users?.profileImage ? (
@@ -93,11 +107,11 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 						<AiOutlineUser className='h-8 w-8 p-0 m-0 rounded-full' />
 					)}
 				</div>
-				<div>
+				<div className='max-w-[94%]'>
 					<div className='flex flex-col gap-1'>
-						<div className='flex flex-row items-center gap-2'>
+						<div className='flex flex-row items-center gap-2 justify-between'>
 							<div className='font-bold'>{comment.users?.name ? comment.users?.name : 'Unknown User'}</div>
-							<div className='text-gray-500'>{comment.created_at}</div>
+							<div className='text-gray-500'>{dateString}</div>
 						</div>
 						<div>{comment.content}</div>
 					</div>

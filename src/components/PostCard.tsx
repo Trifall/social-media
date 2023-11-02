@@ -104,7 +104,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 		: 'N/A';
 
 	return (
-		<div className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800 min-w-[350px]'>
+		<div className='flex flex-col bg-inherit min-w-[350px] max-w-[80vw]'>
 			<PostPopover post={post} user={user} />
 			<div className='flex items-center gap-5 px-3 pt-3'>
 				<div className='relative h-12 w-12'>
@@ -182,7 +182,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 					</div>
 				</div>
 				<NoSSR>
-					<div className='items-center flex justify-center text-xs'>
+					<div className='items-center flex justify-center md:text-[12px] text-[10px]'>
 						<span className=''>{dateString}</span>
 					</div>
 				</NoSSR>
