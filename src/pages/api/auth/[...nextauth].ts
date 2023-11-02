@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/pages/api/auth/[...nextauth].ts
 
+import { LikedPost } from '@/types/types';
+import { db } from '@/utils/dbClient';
 import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
-import { LikedPost, users } from '../../../../drizzle/schema';
-import { db } from '../../../utils/dbClient';
+import { users } from '../../../../drizzle/schema';
 
 declare module 'next-auth' {
 	interface Session {

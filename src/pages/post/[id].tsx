@@ -1,13 +1,12 @@
+import type { Comment, LikedPost, Post } from '@/types/types';
 import { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
-import { LikedPost } from '../../../drizzle/schema';
 import CommentCard from '../../components/CommentCard';
 import CommentsModal from '../../components/CommentsModal';
 import PostCard from '../../components/PostCard';
 import { db } from '../../utils/dbClient';
-import { Comment, Post } from '../api/post';
 
 type PostPageProps = {
 	post?: Post;

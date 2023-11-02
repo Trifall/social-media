@@ -1,3 +1,4 @@
+import type { Post } from '@/types/types';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -6,7 +7,6 @@ import Button from '../components/Button';
 import CreatePostModal from '../components/CreatePostModal';
 import PostCard from '../components/PostCard';
 import { db } from '../utils/dbClient';
-import { Post } from './api/post';
 
 type HomeProps = {
 	posts: Post[];

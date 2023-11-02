@@ -1,11 +1,6 @@
+import { LikedPost, Media } from '@/types/types';
 import { relations, sql } from 'drizzle-orm';
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { Media } from '../src/pages/api/post';
-
-export type LikedPost = {
-	post_id: number;
-	timestamp: Date;
-};
 
 export const users = sqliteTable(
 	'users',

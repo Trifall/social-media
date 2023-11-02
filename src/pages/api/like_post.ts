@@ -1,19 +1,10 @@
+import { LikedPost, likePostSchema } from '@/types/types';
+import { db } from '@/utils/dbClient';
 import { eq, sql } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { z } from 'zod';
-import { LikedPost, comments, posts, users } from '../../../drizzle/schema';
-import { db } from '../../utils/dbClient';
+import { comments, posts, users } from '../../../drizzle/schema';
 import { authOptions } from './auth/[...nextauth]';
-
-const likePostSchema = z.object({
-	post_id: z.number().int(),
-	user_id: z.string(),
-	set_state: z.boolean(),
-	is_comment: z.boolean().optional().default(false),
-});
-
-export type LikePostData = z.infer<typeof likePostSchema>;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);

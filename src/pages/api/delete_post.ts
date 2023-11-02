@@ -1,20 +1,11 @@
+import { deletePostSchema } from '@/types/types';
+import { db } from '@/utils/dbClient';
 import { eq } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { UTApi } from 'uploadthing/server';
-import { z } from 'zod';
 import { posts } from '../../../drizzle/schema';
-import { db } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
-
-const deletePostSchema = z.object({
-	user_id: z.string(),
-	post_id: z.number(),
-});
-
-export type DeletePostData = z.infer<typeof deletePostSchema>;
-
-// TODO: need to test this
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);

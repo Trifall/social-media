@@ -1,12 +1,19 @@
 {
-	"name": "next-ts-template",
-	"version": "1.0.0",
-	"description": "Next.js with TypeScript / Husky (Lint-staged) / PM2 / ESLint / Prettier",
+	"name": "social-media-site",
+	"version": "1.1.0",
+	"description": "Mock Social Media App Next.js with TypeScript / Husky (Lint-staged) / PM2 / ESLint / Prettier",
 	"private": true,
 	"author": {
 		"name": "Jerren T",
-		"email": "Jerren@trifall.com"
+		"email": "Jerren@trifall.com",
+		"url": "https://trifall.com"
 	},
+	"contributors": [
+		{
+			"name": "Dolan Reynolds",
+			"url": "https://dolan.dev"
+		}
+	],
 	"scripts": {
 		"dev": "next dev",
 		"build": "yarn install && next build",

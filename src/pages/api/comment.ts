@@ -1,21 +1,9 @@
+import { commentSchema } from '@/types/types';
+import { db } from '@/utils/dbClient';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { z } from 'zod';
 import { comments } from '../../../drizzle/schema';
-import { db } from '../../utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
-
-const commentSchema = z.object({
-	id: z.number().int().optional(),
-	user_id: z.string(),
-	post_id: z.number().int(),
-	content: z.string(),
-	created_at: z.string().optional(),
-	likes: z.number().int().optional().default(0),
-	users: z.object({ name: z.string(), profileImage: z.string() }).optional(),
-});
-
-export type Comment = z.infer<typeof commentSchema>;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);

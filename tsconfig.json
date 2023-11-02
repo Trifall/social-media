@@ -23,10 +23,14 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
 		},
-		"typeRoots": ["./node_modules/@types", "./src/@types"]
+		"plugins": [
+      {
+        "name": "next"
+      }
+    ],
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/**/*.ts", "src/**/*.tsx"],
+	"include": ["next-env.d.ts", "next-auth.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
 }

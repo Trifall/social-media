@@ -1,3 +1,4 @@
+import { Media } from '@/types/types';
 import { Dialog } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -9,7 +10,6 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import { UploadFileResponse } from 'uploadthing/client';
 import { z } from 'zod';
-import { Media } from '../pages/api/post';
 import { useUploadThing } from '../utils/uploadthing';
 import Button from './Button';
 import Modal from './Modal';

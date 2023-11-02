@@ -1,10 +1,9 @@
+import type { Comment, LikePostData } from '@/types/types';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Session } from 'next-auth';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { LikePostData } from '../pages/api/like_post';
-import { Comment } from '../pages/api/post';
 import LikeButton from './LikeButton';
 
 type CommentCardProps = {
