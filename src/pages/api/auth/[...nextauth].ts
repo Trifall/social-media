@@ -1,10 +1,11 @@
+import { DefaultSession } from 'next-auth';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/pages/api/auth/[...nextauth].ts
 
 import { LikedPost } from '@/types/types';
 import { db } from '@/utils/dbClient';
 import { users } from '@drizzle/schema';
-import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 
 declare module 'next-auth' {
@@ -71,13 +72,48 @@ export const authOptions: NextAuthOptions = {
 		async jwt(data) {
 			// Persist the OAuth access_token to the token right after signin
 			const { token, account, user } = data;
+			// console.log(`[NextAuth/JWT/Token] ${JSON.stringify(data, null, 2)}`)
+			try {
+				// console.log(`[NextAuth/JWT/User] User ${JSON.stringify(token.user, null, 2)}`)
+				const userInDB = await db.query.users.findFirst({
+					where: (users, { eq }) => eq(users.id, (token.user as any)?.id?.toString()),
+				});
+
+				if (!userInDB) {
+					if (!(token.user as any).id || !user.name || !user.email || !user.image) {
+						return token;
+					}
+
+					await db
+						.insert(users)
+						.values({
+							name: user.name,
+							email: user.email,
+							profileImage: user.image,
+							liked_posts: [],
+							id: (token.user as any).id.toString(),
+						})
+						.returning()
+						.get();
+					console.log(`[NextAuth/JWT/Create] User ${user.name} created in DB`);
+				}
+			} catch (error: any) {
+				console.log(`[NextAuth/JWT/Error] ${error.message}`);
+			}
+
 			if (account) {
 				token.user = user;
 			}
+			console.log(`[NextAuth/JWT/Token] Returning token`);
 			return token;
 		},
 		async session({ session, token }) {
+			console.log(`[NextAuth/Session] Session starting`);
 			// Send properties to the client, like an access_token from a provider.
+			if (!token || !token.user || !token.name) {
+				return session;
+			}
+
 			(session as any).user = token.user;
 
 			try {

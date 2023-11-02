@@ -5,9 +5,10 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import router from 'next/router';
 import { useState } from 'react';
 import { AiFillWarning } from 'react-icons/ai';
 import { authOptions } from './api/auth/[...nextauth]';
@@ -22,7 +23,7 @@ const AccountPage = () => {
 
 	const mutation = useMutation({
 		mutationFn: (data: DeleteAccountPostData) => {
-			return axios.post('/api/like_post', data);
+			return axios.post('/api/delete_account', data);
 		},
 		onSuccess: () => {
 			console.log('Like comment mutation success');
@@ -49,7 +50,7 @@ const AccountPage = () => {
 
 		// console.log('Like button clicked');
 		if (!user || !user.id) {
-			alert('Error: User not logged in');
+			alert('Error: User is not logged in');
 			return;
 		}
 
@@ -64,6 +65,11 @@ const AccountPage = () => {
 
 		if (deleteAccountResponse.status === 200) {
 			alert('Account deleted successfully');
+			signOut({
+				redirect: true,
+				callbackUrl: '/',
+			}),
+				router.replace('/');
 		} else {
 			alert(
 				`Error: Failed to delete account. Status code: ${deleteAccountResponse.status}, message: ${deleteAccountResponse.data?.message}`
@@ -138,7 +144,7 @@ const AccountPage = () => {
 							<div className='flex gap-2'>
 								<Button
 									onClick={handleConfirmDelete}
-									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+									className={`text-black dark:text-white bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
 									Yes
 								</Button>
