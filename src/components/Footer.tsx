@@ -10,9 +10,7 @@ type FooterProps = {
 const Footer = ({ isFixed = false }: FooterProps) => {
 	return (
 		<footer
-			className={`py-3 md:px-6 lg:px-8 border-t-2 border-gray-700 bottom-0 w-96 left-1/2 -translate-x-1/2 mt-4 ${
-				isFixed ? `fixed` : ` relative`
-			}`}
+			className={`pb-3 md:px-6 lg:px-8 bottom-0 w-96 left-1/2 -translate-x-1/2 mt-4 ${isFixed ? `fixed` : ` relative`}`}
 		>
 			<div className='mx-auto max-w-screen-xl text-center'>
 				<ul className='flex flex-wrap justify-center items-center mb-2 gap-4 text-white'>
