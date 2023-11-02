@@ -104,7 +104,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 		: 'N/A';
 
 	return (
-		<div className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800'>
+		<div className='flex flex-col rounded-lg bg-inherit bg-neutral-200 p-2 dark:bg-neutral-800 min-w-[350px]'>
 			<PostPopover post={post} user={user} />
 			<div className='flex items-center gap-5 px-3 pt-3'>
 				<div className='relative h-12 w-12'>
@@ -147,8 +147,8 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 					);
 				})}
 			</div>
-			<div className='flex flex-row flex-wrap justify-between px-2 pt-3'>
-				<div className='flex flex-row gap-4 justify-center align-middle items-center'>
+			<div className='flex flex-row flex-wrap justify-between px-2 py-3'>
+				<div className='flex flex-row gap-2 justify-center align-middle items-center'>
 					<div className='flex flex-row gap-1'>
 						{!onReplyClick ? (
 							<Link
@@ -182,7 +182,7 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 					</div>
 				</div>
 				<NoSSR>
-					<div className='px-3 items-center flex justify-center'>
+					<div className='items-center flex justify-center text-xs'>
 						<span className=''>{dateString}</span>
 					</div>
 				</NoSSR>
@@ -294,7 +294,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 				shouldCloseOnOverlayClick={!isDeleteLoading}
 				skipExitAnimation
 			>
-				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
+				<Dialog.Panel className='w-3/4 transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
 					{!user ? (
 						<div className='flex flex-col items-center gap-3'>
 							<div className='p-2 rounded-full'>
@@ -345,7 +345,11 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 									isError={deleteMutation.status === 'error'}
 									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
-									Yes
+									{isDeleteLoading
+										? 'Deleting...'
+										: isRequestComplete && deleteMutation.status === 'success'
+										? 'Deleted'
+										: 'Yes'}
 								</Button>
 								<Button
 									onClick={handleClose}

@@ -71,7 +71,7 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 			{...getRootProps()}
 		>
 			<input {...getInputProps()} />
-			<span>Upload Media</span>
+			<span>Upload Media (max 4 files)</span>
 			<AiOutlineUpload className='h-6 w-6' />
 			{files.length > 0 && (
 				<span className={`bg-blue-600 p-2 rounded-sm text-white `}>

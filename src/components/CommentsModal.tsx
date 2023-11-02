@@ -110,7 +110,7 @@ const CommentsModal = ({
 
 	return (
 		<Modal isOpen={postModalOpen} closeModal={() => setCommentModalOpen(false)}>
-			<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl dark:bg-primary-fg bg-light-primary-fg dark:text-white text-black p-6 text-left align-middle shadow-xl transition-all'>
+			<Dialog.Panel className='w-4/5 transform overflow-hidden rounded-2xl dark:bg-primary-fg bg-light-primary-fg dark:text-white text-black p-6 text-left align-middle shadow-xl transition-all'>
 				{!user && (
 					<div className='flex flex-col items-center gap-3'>
 						<div className='p-2 rounded-full'>
@@ -153,12 +153,12 @@ const CommentsModal = ({
 									disabled={isComplete}
 									maxLength={500}
 									style={{ resize: 'none' }}
-									className='h-96'
+									className='h-48 p-2'
 									{...register('content')}
 								/>
 							</div>
 						</div>
-						<div className='mt-4 flex flex-col gap-4'>
+						<div className='mt-4 flex flex-col gap-4 w-32 mx-auto'>
 							<Button
 								className='flex items-center shadow-sm justify-center gap-2 dark:border-white border-secondary-bg border hover:text-white hover:bg-secondary-hover dark:hover:bg-tertiary-hover transition-all duration-300'
 								onClick={handleSubmit(onSubmit)}
