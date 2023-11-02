@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import { BsFillMoonFill, BsFillSunFill } from 'react-icons/bs';
 
 const ThemeButton = () => {
@@ -19,7 +19,7 @@ const ThemeButton = () => {
 		} else {
 			setIsDark(false);
 		}
-	}, []);
+	}, [currentTheme]);
 
 	return (
 		<label className='flex cursor-pointer select-none items-center gap-2 transition-all duration-500'>
