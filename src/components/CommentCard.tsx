@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Session } from 'next-auth';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { AiOutlineUser } from 'react-icons/ai';
 import LikeButton from './LikeButton';
 
 type CommentCardProps = {
@@ -79,19 +80,23 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 		<div key={comment.id} className='flex flex-col gap-2 bg-gray-800 p-4 rounded-xl'>
 			<div className='flex flex-row gap-2'>
 				<div className='relative h-8 w-8'>
-					<Image
-						sizes='100%'
-						className='rounded-full object-cover m-0'
-						fill
-						quality={100}
-						alt='profile'
-						src={comment.users?.profileImage ?? ''}
-					/>
+					{comment.users?.profileImage ? (
+						<Image
+							sizes='100%'
+							className='rounded-full object-cover m-0'
+							fill
+							quality={100}
+							alt='profile'
+							src={comment.users?.profileImage}
+						/>
+					) : (
+						<AiOutlineUser className='h-12 w-12 p-0 m-0 rounded-full' />
+					)}
 				</div>
 				<div>
 					<div className='flex flex-col gap-1'>
 						<div className='flex flex-row items-center gap-2'>
-							<div className='font-bold'>{comment.users?.name}</div>
+							<div className='font-bold'>{comment.users?.name ? comment.users?.name : 'Unknown User'}</div>
 							<div className='text-gray-500'>{comment.created_at}</div>
 						</div>
 						<div>{comment.content}</div>

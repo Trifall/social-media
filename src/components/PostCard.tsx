@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
-import { AiFillWarning } from 'react-icons/ai';
+import { AiFillWarning, AiOutlineUser } from 'react-icons/ai';
 import { BsTrashFill } from 'react-icons/bs';
 import { FiMoreHorizontal } from 'react-icons/fi';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
@@ -59,12 +59,12 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 	const handleLikeButtonClicked = async () => {
 		// console.log('Like button clicked');
 		if (!user || !user.id) {
-			alert('Error: User not logged in');
+			alert('Error: User is not logged in');
 			return;
 		}
 
 		if (!post.id) {
-			alert('Error: Post id not found');
+			alert('Error: Post ID not found');
 			return;
 		}
 
@@ -108,16 +108,22 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 			<PostPopover post={post} user={user} />
 			<div className='flex items-center gap-5 px-3 pt-3'>
 				<div className='relative h-12 w-12'>
-					<Image
-						sizes='100%'
-						className='m-0 rounded-full object-cover'
-						fill
-						quality={100}
-						alt='profile'
-						src={post.users?.profileImage ?? ''}
-					/>
+					{post.users?.profileImage ? (
+						<Image
+							sizes='100%'
+							className='m-0 rounded-full object-cover'
+							fill
+							quality={100}
+							alt='profile'
+							src={post.users?.profileImage}
+						/>
+					) : (
+						<AiOutlineUser className='h-12 w-12 p-0 m-0 rounded-full' />
+					)}
 				</div>
-				<h1 className='text-xl font-bold text-black dark:text-white'>{post.users?.name}</h1>
+				<h1 className='text-xl font-bold text-black dark:text-white'>
+					{post.users?.name ? post.users?.name : 'Unknown User'}
+				</h1>
 			</div>
 			<div className='px-3 pt-3'>{post.content}</div>
 			<div className='flex flex-wrap justify-evenly gap-4 px-3 pt-3 relative'>
@@ -219,9 +225,8 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 	const handleConfirmDelete = async (e?: React.FormEvent) => {
 		e?.preventDefault();
 
-		// console.log('Like button clicked');
 		if (!user || !user.id) {
-			alert('Error: User not logged in');
+			alert('Error: User is not logged in');
 			return;
 		}
 
@@ -233,13 +238,9 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 			post_id: post.id,
 		} as DeletePostData);
 
-		// console.log(`likePostResponse: ${JSON.stringify(likePostResponse, null, 2)}`);
-
-		if (deletePostResponse.status === 200) {
-			// alert('Post deleted successfully');
-		} else {
+		if (deletePostResponse.status !== 200) {
 			alert(
-				`Error: Failed to delete account. Status code: ${deletePostResponse.status}, message: ${deletePostResponse.data?.message}`
+				`Error: Failed to delete post. Status code: ${deletePostResponse.status}, message: ${deletePostResponse.data?.message}`
 			);
 		}
 		setIsDeleteLoading(false);
