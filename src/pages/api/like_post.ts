@@ -64,6 +64,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			likedPosts = [];
 		}
 
+		if (likedPosts.find((post: LikedPost) => post.post_id === parsed.data.post_id)) {
+			return res.status(503).send({
+				message: 'User has already liked this post, so it cannot be added.',
+			});
+		}
+
 		liked_posts_data.push(...likedPosts, {
 			post_id: parsed.data.post_id,
 			timestamp: new Date(),
@@ -74,6 +80,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				message: 'User has no liked posts to remove.',
 			});
 		} else {
+			if (!likedPosts.find((post: LikedPost) => post.post_id === parsed.data.post_id)) {
+				return res.status(503).send({
+					message: 'User has not liked this post, so it cannot be removed.',
+				});
+			}
+
 			liked_posts_data.push(...likedPosts.filter((post: LikedPost) => post.post_id !== parsed.data.post_id));
 		}
 	}

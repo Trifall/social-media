@@ -2,7 +2,7 @@ import { DeleteAccountPostData } from '@/pages/account';
 import type { DeletePostData, LikePostData, Post } from '@/types/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Session } from 'next-auth/core/types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,9 +34,12 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 		if (!user) {
 			return;
 		}
+		console.log(`user: ${JSON.stringify(user, null, 2)}`);
 
 		if (user?.liked_posts) {
 			const likedPost = !!user?.liked_posts?.find((likedPost) => likedPost.post_id === post.id);
+			console.log(post.id);
+			console.log(`likedPost: ${JSON.stringify(likedPost, null, 2)}`);
 			setIsLiked(likedPost);
 		}
 
@@ -44,11 +47,29 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 	}, [post.id, user, user?.liked_posts]);
 
 	const likePostMutation = useMutation({
-		mutationFn: (data: LikePostData) => {
-			return axios.post('/api/like_post', data);
+		mutationFn: async (data: LikePostData) => {
+			let res: AxiosResponse | undefined = undefined;
+			try {
+				res = await axios.post('/api/like_post', data);
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					console.log(`Like post mutation error (axios): ${error.response?.status}`);
+					if (error.response?.status === 503) {
+						// invert state of like button
+						setIsLiked(!isLiked);
+					}
+					// Do something with this error...
+				} else {
+					console.log(`Like post mutation error: ${error}`);
+				}
+			}
+			return res;
 		},
 		onSuccess: () => {
 			console.log('Like post mutation success');
+		},
+		onError: (error) => {
+			console.log(`Like post mutation error: ${error.cause} - ${error.message} - ${error.stack}`);
 		},
 	});
 
@@ -79,14 +100,18 @@ const PostCard = ({ post, user, onReplyClick }: PostCardProps) => {
 
 		// console.log(`likePostResponse: ${JSON.stringify(likePostResponse, null, 2)}`);
 
-		if (likePostResponse.status === 200) {
+		if (likePostResponse && likePostResponse.status === 200) {
 			// alert('Post liked/unliked successfully');
 			setLikesCount(!isLiked ? likesCount + 1 : likesCount - 1);
 			setIsLiked(!isLiked);
 		} else {
-			alert(
-				`Error: Failed to like/unlike post. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
-			);
+			if (likePostResponse?.data?.message && likePostResponse.status) {
+				alert(
+					`Error: Failed to like/unlike Post. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
+				);
+			} else {
+				alert(`Error: Failed to like/unlike Post. Unknown Error.`);
+			}
 		}
 		setIsLikeLoading(false);
 	};

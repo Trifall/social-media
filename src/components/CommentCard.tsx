@@ -1,6 +1,6 @@
 import type { Comment, LikePostData } from '@/types/types';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Session } from 'next-auth';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -32,11 +32,20 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 	}, [comment.id, user, user?.liked_posts]);
 
 	const mutation = useMutation({
-		mutationFn: (data: LikePostData) => {
-			return axios.post('/api/like_post', data);
+		mutationFn: async (data: LikePostData) => {
+			let res: AxiosResponse | undefined = undefined;
+			try {
+				res = await axios.post('/api/like_post', data);
+			} catch (error) {
+				console.log(`Like comment mutation error: ${error}`);
+			}
+			return res;
 		},
 		onSuccess: () => {
 			console.log('Like comment mutation success');
+		},
+		onError: (error) => {
+			console.log(`Like comment mutation error: ${error.cause} - ${error.message} - ${error.stack}`);
 		},
 	});
 
@@ -64,15 +73,20 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 
 		// console.log(`likePostResponse: ${JSON.stringify(likePostResponse, null, 2)}`);
 
-		if (likePostResponse.status === 200) {
+		if (likePostResponse && likePostResponse.status === 200) {
 			// alert('Post liked/unliked successfully');
 			setLikesCount(!isLiked ? likesCount + 1 : likesCount - 1);
 			setIsLiked(!isLiked);
 		} else {
-			alert(
-				`Error: Failed to like/unlike Comment. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
-			);
+			if (likePostResponse?.data?.message && likePostResponse.status) {
+				alert(
+					`Error: Failed to like/unlike Comment. Status code: ${likePostResponse.status}, message: ${likePostResponse.data?.message}`
+				);
+			} else {
+				alert(`Error: Failed to like/unlike Comment. Unknown Error.`);
+			}
 		}
+
 		setIsLoading(false);
 	};
 	const dateString = comment.created_at
