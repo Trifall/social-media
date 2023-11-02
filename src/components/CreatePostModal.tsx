@@ -171,7 +171,7 @@ const CreatePostModal = ({
 						<div>
 							<Button
 								onClick={handleClose}
-								className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								className={`flex items-center shadow-sm justify-center gap-2 dark:border-white border-secondary-bg border hover:text-white hover:bg-secondary-hover dark:hover:bg-tertiary-hover transition-all duration-300`}
 							>
 								Close
 							</Button>
