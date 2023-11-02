@@ -4,6 +4,9 @@ const nextConfig = {
 	images: {
 		domains: ['avatars.githubusercontent.com', 'utfs.io'],
 	},
+	compiler: {
+		removeConsole: process.env.NODE_ENV === 'production',
+	},
 };
 
 module.exports = nextConfig;
