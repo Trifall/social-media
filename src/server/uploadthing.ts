@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import * as z from 'zod';
 
 import { createUploadthing, type FileRouter } from 'uploadthing/next-legacy';
-import { authOptions } from '../pages/api/auth/[...nextauth]';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const f = createUploadthing({
 	errorFormatter: (err) => {

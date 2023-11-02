@@ -3,9 +3,9 @@
 
 import { LikedPost } from '@/types/types';
 import { db } from '@/utils/dbClient';
+import { users } from '@drizzle/schema';
 import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
-import { users } from '../../../../drizzle/schema';
 
 declare module 'next-auth' {
 	interface Session {

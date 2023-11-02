@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
-import { users } from '../../../drizzle/schema';
-import { db } from '../../utils/dbClient';
+import { users } from '@drizzle/schema';
+import { db } from '@utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
 const deleteAccountSchema = z.object({

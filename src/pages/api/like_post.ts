@@ -1,9 +1,9 @@
 import { LikedPost, likePostSchema } from '@/types/types';
 import { db } from '@/utils/dbClient';
+import { comments, posts, users } from '@drizzle/schema';
 import { eq, sql } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { comments, posts, users } from '../../../drizzle/schema';
 import { authOptions } from './auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

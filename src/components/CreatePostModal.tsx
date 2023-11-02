@@ -10,7 +10,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import { UploadFileResponse } from 'uploadthing/client';
 import { z } from 'zod';
-import { useUploadThing } from '../utils/uploadthing';
+import { useUploadThing } from '@utils/uploadthing';
 import Button from './Button';
 import Modal from './Modal';
 import MultiUploader from './UploadBox';

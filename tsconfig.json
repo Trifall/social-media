@@ -24,6 +24,9 @@
 		"incremental": true,
 		"paths": {
 			"@/*": ["./src/*"],
+			"@components/*": ["./src/components/*"],
+			"@drizzle/*": ["./drizzle/*"],
+			"@utils/*": ["./src/utils/*"],
 		},
 		"plugins": [
       {

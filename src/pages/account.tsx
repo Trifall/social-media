@@ -1,3 +1,5 @@
+import Button from '@components/Button';
+import Modal from '@components/Modal';
 import { Dialog } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
@@ -8,8 +10,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { AiFillWarning } from 'react-icons/ai';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
 import { authOptions } from './api/auth/[...nextauth]';
 
 export type DeleteAccountPostData = {

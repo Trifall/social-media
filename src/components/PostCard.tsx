@@ -1,3 +1,5 @@
+import { DeleteAccountPostData } from '@/pages/account';
+import type { DeletePostData, LikePostData, Post } from '@/types/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
@@ -11,8 +13,6 @@ import { BsTrashFill } from 'react-icons/bs';
 import { FiMoreHorizontal } from 'react-icons/fi';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
-import { DeleteAccountPostData } from '../pages/account';
-import type { DeletePostData, LikePostData, Post } from '../types/types';
 import Button from './Button';
 import LikeButton from './LikeButton';
 import Modal from './Modal';

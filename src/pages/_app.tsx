@@ -1,10 +1,10 @@
 import '@/styles/globals.css';
+import Footer from '@components/Footer';
+import Header from '@components/Header';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
 
 const queryClient = new QueryClient();
 

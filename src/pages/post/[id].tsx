@@ -1,12 +1,12 @@
 import type { Comment, LikedPost, Post } from '@/types/types';
+import CommentCard from '@components/CommentCard';
+import CommentsModal from '@components/CommentsModal';
+import PostCard from '@components/PostCard';
+import { db } from '@utils/dbClient';
 import { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
-import CommentCard from '../../components/CommentCard';
-import CommentsModal from '../../components/CommentsModal';
-import PostCard from '../../components/PostCard';
-import { db } from '../../utils/dbClient';
 
 type PostPageProps = {
 	post?: Post;

@@ -1,8 +1,8 @@
 import { commentSchema } from '@/types/types';
 import { db } from '@/utils/dbClient';
+import { comments } from '@drizzle/schema';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { comments } from '../../../drizzle/schema';
 import { authOptions } from './auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

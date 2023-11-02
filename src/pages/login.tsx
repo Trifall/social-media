@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { IoMdKey } from 'react-icons/io';
-import Button from '../components/Button';
+import Button from '@components/Button';
 import { authOptions } from './api/auth/[...nextauth]';
 
 const Login = () => {
