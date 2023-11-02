@@ -252,7 +252,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 
 	return (
 		<div className='relative'>
-			<Popover className='absolute right-0 top-0 dark:hover:bg-neutral-600 hover:bg-neutral-300 rounded-lg p-2 transition-all duration-500'>
+			<Popover className='absolute right-0 top-0 hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
 				{() => (
 					<>
 						<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>
@@ -270,12 +270,12 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 							leaveFrom='opacity-100 translate-y-0'
 							leaveTo='opacity-0 translate-y-1'
 						>
-							<Popover.Panel className='absolute right-0 mt-3 max-w-xs w-[200px] lg:max-w-3xl z-20 bg-gray-800 rounded-xl'>
-								<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 p-2'>
+							<Popover.Panel className='absolute right-0 mt-3 max-w-xs w-[200px] lg:max-w-3xl z-20 bg-primary-fg border-2 border-secondary-hover rounded-xl'>
+								<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 p-2 '>
 									<div className='relative whitespace-nowrap flex gap-8  p-4 flex-col'>
 										<button
 											onClick={() => setIsDeleteModalOpen(true)}
-											className='-m-3 flex items-center bg-gray-900 rounded-lg px-4 py-2 transition duration-150 ease-in-out hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
+											className='-m-3 flex items-center rounded-lg px-4 py-2 transition duration-150 ease-in-out focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium dark:hover:bg-tertiary-hover dark:bg-primary-fg hover:bg-tertiary-hover dark:text-white bg-primary-fg border-2 border-secondary-bg text-black'
 										>
 											<BsTrashFill className='h-5 w-5 text-white pr-2 fill-red-500' />
 											<p className='text-sm text-red-500'>Delete Post</p>
@@ -293,17 +293,20 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 				shouldCloseOnOverlayClick={!isDeleteLoading}
 				skipExitAnimation
 			>
-				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl bg-gray-700 p-6 text-left align-middle shadow-xl transition-all'>
+				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
 					{!user ? (
 						<div className='flex flex-col items-center gap-3'>
 							<div className='p-2 rounded-full'>
 								<AiFillWarning className='h-10 w-10 text-red-600' />
 							</div>
-							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+							<Dialog.Title as='h3' className='text-xl font-medium leading-6 dark:text-white text-black'>
 								You must be signed in to delete a post.
 							</Dialog.Title>
 							<div>
-								<Button onClick={handleClose} className={`border-green-400 border-2 rounded-lg`}>
+								<Button
+									onClick={handleClose}
+									className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								>
 									Close
 								</Button>
 							</div>
@@ -326,7 +329,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 										{deleteMutation.error?.message ? deleteMutation.error.message : `An unexpected error has occured.`}
 									</span>
 								) : (
-									<span>
+									<span className='dark:text-white text-black'>
 										Are you sure you want to <span className='text-red-500 font-bold'>delete</span> this post? This
 										action is <span className='text-red-500 font-bold'>irreversible</span>.
 									</span>
@@ -339,20 +342,24 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 									isLoading={isDeleteLoading || deleteMutation.status === 'pending'}
 									isSuccess={deleteMutation.status === 'success'}
 									isError={deleteMutation.status === 'error'}
-									className={`text-red-500 hover:bg-red-900 hover:text-white border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center`}
+									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
 									Yes
 								</Button>
 								<Button
 									onClick={handleClose}
 									isDisabled={isDeleteLoading || isRequestComplete}
-									className={`text-green-500 hover:bg-green-900 hover:text-white border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center`}
+									className={` text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
 									No
 								</Button>
 							</div>
 							{isRequestComplete ? (
-								<Button onClick={handleClose} isDisabled={isDeleteLoading} className={` border-2 rounded-lg`}>
+								<Button
+									onClick={handleClose}
+									isDisabled={isDeleteLoading}
+									className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								>
 									Close
 								</Button>
 							) : null}

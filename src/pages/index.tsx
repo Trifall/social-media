@@ -57,7 +57,7 @@ export default function Home({ posts }: HomeProps) {
 				<div className='flex max-w-[80vw] items-center justify-center lg:mb-0 lg:text-left'>
 					<div className='relative flex flex-col items-center gap-4 overflow-y-scroll no-scrollbar'>
 						<Button
-							className='w-48  items-center rounded-lg bg-neutral-300 px-4 py-3 text-black transition-all duration-500 hover:bg-neutral-400 dark:bg-neutral-600 dark:text-white dark:hover:bg-gray-500 lg:px-3 lg:py-2'
+							className='w-48 items-center rounded-lg dark:hover:bg-secondary-hover dark:bg-secondary-bg  hover:bg-secondary-hover dark:text-white bg-light-primary-fg border-2 border-secondary-bg text-black px-4 py-3 transition-all duration-500 lg:px-3 lg:py-2'
 							onClick={() => setCreatePostModalOpen(true)}
 						>
 							Create Post

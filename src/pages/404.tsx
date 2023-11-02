@@ -16,9 +16,9 @@ export default function Custom404() {
 					</p>
 					<Link
 						href='/'
-						className='inline-flex text-white bg-gray-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4'
+						className='inline-flex text-black bg-neutral-300 dark:bg-primary-fg dark:text-white dark:hover:bg-secondary-hover dark:border-light-primary-bg hover:bg-secondary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center items-center transition-all duration-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4'
 					>
-						Back to Homepage
+						Back to Home
 					</Link>
 				</div>
 			</div>

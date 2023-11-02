@@ -1,11 +1,12 @@
+import Button from '@components/Button';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 import { IoMdKey } from 'react-icons/io';
-import Button from '@components/Button';
 import { authOptions } from './api/auth/[...nextauth]';
 
 const Login = () => {
@@ -35,26 +36,27 @@ const Login = () => {
 				<Image src='/images/login_bg.jpeg' alt='' fill />
 			</div>
 
-			<div className='max-w-lg h-fit transform overflow-hidden rounded-2xl border-1 bg-opacity-75 bg-gray-900 p-6 text-left align-middle shadow-xl transition-all absolute bottom-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2  '>
-				<div className='flex items-center gap-3'>
+			<div className='max-w-lg h-fit transform overflow-hidden rounded-2xl border-1 bg-opacity-75 bg-gray-900 px-6 py-4 text-left align-middle shadow-xl transition-all absolute bottom-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2  '>
+				<div className='flex gap-3 items-center'>
 					<div className='p-2 border-2 border-white rounded-full'>
 						<IoMdKey className='h-6 w-6 text-teal-300' />
 					</div>
-					<h3 className='text-lg font-medium leading-6 text-white'>Sign in</h3>
+					<h3 className='text-lg font-medium text-center text-white'>Sign in</h3>
 				</div>
-				<div className='mt-2'>
-					<p className='text-sm text-gray-200'>Sign in with GitHub below</p>
-				</div>
-				{/* <div className='w-full border-t border-gray-400 my-4' /> */}
-
-				<div className='mt-4 flex flex-col gap-4'>
+				<div className='mt-4 flex flex-col justify-center items-center'>
 					<Button
-						className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
+						className='text-white flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
 						onClick={() => handleSignIn('github')}
 					>
 						<FaGithub className='h-5 w-5' />
 						Login with Github
 					</Button>
+					<Link
+						href='/'
+						className='inline-flex text-white bg-transparent hover:bg-secondary-hover border-light-primary-bg border rounded-lg justify-center items-center transition-all duration-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-sm px-5 py-2 text-center dark:focus:ring-primary-900 my-4'
+					>
+						Back to Home
+					</Link>
 				</div>
 			</div>
 		</>
@@ -78,6 +80,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	}
 	// console.log(`session: ${JSON.stringify(session, null, 2)}`);
 	return {
-		props: { session, showHeader: false, showFooter: true },
+		props: { session, showHeader: false, showFooter: true, isFixedFooter: true },
 	};
 }

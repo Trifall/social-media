@@ -88,7 +88,7 @@ const AccountPage = () => {
 					</p>
 					<div>
 						<Button
-							className='inline-flex text-white bg-red-700 hover:bg-gray-700 transition-all duration-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4'
+							className='inline-flex text-white bg-red-500 hover:bg-red-400 w-36 justify-center flex-row gap-2 items-center transition-all duration-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4'
 							onClick={() => setIsDeleteModalOpen(true)}
 							isLoading={isLoading}
 						>
@@ -98,25 +98,28 @@ const AccountPage = () => {
 					<div>
 						<Link
 							href='/'
-							className='inline-flex text-white bg-gray-600 hover:bg-gray-700 transition-all duration-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4 hover:underline'
+							className='inline-flex text-black bg-neutral-300 dark:bg-primary-fg dark:text-white dark:hover:bg-secondary-hover dark:border-light-primary-bg hover:bg-secondary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center items-center transition-all duration-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4'
 						>
-							Back to Homepage
+							Back to Home
 						</Link>
 					</div>
 				</div>
 			</div>
 			<Modal isOpen={isDeleteModalOpen} closeModal={handleClose} shouldCloseOnOverlayClick>
-				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl bg-gray-700 p-6 text-left align-middle shadow-xl transition-all'>
+				<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl dark:bg-secondary-bg bg-light-secondary-bg p-6 text-left align-middle shadow-xl transition-all'>
 					{!user ? (
 						<div className='flex flex-col items-center gap-3'>
 							<div className='p-2 rounded-full'>
 								<AiFillWarning className='h-10 w-10 text-red-600' />
 							</div>
-							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+							<Dialog.Title as='h3' className='text-xl font-medium leading-6 dark:text-white text-black'>
 								You must be signed in to create a post.
 							</Dialog.Title>
 							<div>
-								<Button onClick={handleClose} className={`border-green-400 border-2 rounded-lg`}>
+								<Button
+									onClick={handleClose}
+									className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								>
 									Close
 								</Button>
 							</div>
@@ -127,14 +130,22 @@ const AccountPage = () => {
 								<AiFillWarning className='h-10 w-10 text-red-600' />
 							</div>
 							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
-								Are you sure you want to <span className='text-red-500 font-bold'>delete</span> your account? This
-								action is <span className='text-red-500 font-bold'>irreversible</span>.
+								<span className='dark:text-white text-black'>
+									Are you sure you want to <span className='text-red-500 font-bold'>delete</span> your account? This
+									action is <span className='text-red-500 font-bold'>irreversible</span>.
+								</span>
 							</Dialog.Title>
 							<div className='flex gap-2'>
-								<Button onClick={handleConfirmDelete} className={`bg-red-600 border-2 rounded-lg`}>
+								<Button
+									onClick={handleConfirmDelete}
+									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								>
 									Yes
 								</Button>
-								<Button onClick={handleClose} className={` bg-gray-500 border-2 rounded-lg`}>
+								<Button
+									onClick={handleClose}
+									className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+								>
 									No
 								</Button>
 							</div>

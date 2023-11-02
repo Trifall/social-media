@@ -31,8 +31,8 @@ const Header = () => {
 							href={href}
 							className={
 								router.pathname == href
-									? 'flex gap-2 dark:bg-neutral-600 dark:hover:bg-gray-500 hover:bg-neutral-400 dark:text-white bg-neutral-300 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
-									: 'flex gap-2 dark:hover:bg-gray-500  dark:text-white hover:bg-neutral-400 text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+									? 'flex gap-2 dark:hover:bg-secondary-hover dark:bg-secondary-bg  hover:bg-secondary-hover dark:text-white bg-light-primary-fg text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
+									: 'flex gap-2 dark:hover:bg-secondary-hover  hover:bg-secondary-hover dark:text-white text-black px-4 py-3 lg:px-3 lg:py-2 rounded-lg transition-all duration-500 items-center'
 							}
 						>
 							{icon}
@@ -48,7 +48,7 @@ const Header = () => {
 						) : (
 							<Button
 								onClick={() => setSignInModalOpen(true)}
-								className='dark:bg-neutral-600 dark:text-white bg-neutral-300 text-black dark:hover:bg-gray-500 hover:bg-neutral-400 transition-all duration-500'
+								className='dark:bg-primary-fg dark:text-white bg-light-primary-fg text-black dark:hover:bg-secondary-hover hover:bg-secondary-hover transition-all duration-500'
 							>
 								Login
 							</Button>
@@ -62,7 +62,7 @@ const Header = () => {
 const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 	if (!data) return null;
 	return (
-		<Popover className='relative dark:hover:bg-neutral-600 hover:bg-neutral-300 rounded-lg p-2 transition-all duration-500'>
+		<Popover className='relative hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
 			{({ open }) => (
 				<>
 					<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>
@@ -82,7 +82,7 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 						<BsFillCaretDownFill
 							className={`${
 								open ? 'rotate-180 transform' : 'rotate-0'
-							} dark:text-gray-200 text-neutral-800 transition-transform`}
+							} dark:text-white text-primary-fg transition-transform`}
 						/>
 					</Popover.Button>
 
@@ -95,13 +95,13 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 						leaveFrom='opacity-100 translate-y-0'
 						leaveTo='opacity-0 translate-y-1'
 					>
-						<Popover.Panel className='absolute right-0 mt-3 max-w-xs w-[200px] lg:max-w-3xl z-20 bg-gray-800 rounded-xl'>
+						<Popover.Panel className='absolute right-0 mt-3 max-w-xs w-[200px] lg:max-w-3xl z-20 bg-primary-fg rounded-xl'>
 							<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 p-2'>
 								<div className='relative whitespace-nowrap flex gap-8  p-4 flex-col'>
 									{profileLinks.map((item) =>
 										item.href ? (
 											<Link
-												className='-m-3 flex items-center text-white bg-gray-900 rounded-lg border-white border-2 px-4 py-2 transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
+												className='-m-3 flex items-center text-white bg-primary-fg border-2 border-secondary-bg rounded-lg px-4 py-2 transition duration-150 ease-in-out dark:hover:bg-secondary-hover hover:bg-secondary-hover  focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
 												key={item.name}
 												href={item.href}
 											>
@@ -111,7 +111,7 @@ const ProfilePopover = ({ data }: { data: SessionContextValue['data'] }) => {
 											<button
 												key={item.name}
 												onClick={item.onClick as () => void}
-												className='-m-3 flex items-center bg-gray-900 rounded-lg px-4 py-2 border-2 transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
+												className='-m-3 flex items-center bg-primary-fg border-2 border-secondary-bg rounded-lg px-4 py-2 transition duration-150 ease-in-out dark:hover:bg-secondary-hover hover:bg-secondary-hover focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 text-sm font-medium'
 											>
 												<p className='text-sm text-white'>{item.name}</p>
 											</button>
@@ -156,24 +156,19 @@ const SignInModal = ({
 	};
 
 	return (
-		<Modal isOpen={signInModalOpen} closeModal={() => setSignInModalOpen(false)}>
-			<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-900 p-6 text-left align-middle shadow-xl transition-all'>
+		<Modal isOpen={signInModalOpen} closeModal={() => setSignInModalOpen(false)} shouldCloseOnOverlayClick>
+			<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
 				<div className='flex items-center gap-3'>
-					<div className='p-2 border-2 border-white rounded-full'>
-						<IoMdKey className='h-6 w-6 text-teal-300' />
+					<div className='p-2 border-2 dark:border-white border-secondary-bg rounded-full'>
+						<IoMdKey className='h-6 w-6 text-teal-500' />
 					</div>
-					<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+					<Dialog.Title as='h3' className='text-xl font-medium leading-6 dark:text-white text-black'>
 						Sign in
 					</Dialog.Title>
 				</div>
-				<div className='mt-2'>
-					<p className='text-sm text-gray-200'>Sign in with GitHub below</p>
-				</div>
-				{/* <div className='w-full border-t border-gray-400 my-4' /> */}
-
-				<div className='mt-4 flex flex-col gap-4'>
+				<div className='mt-4 flex flex-col gap-4 justify-center items-center'>
 					<Button
-						className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
+						className='flex flex-row items-center shadow-sm justify-center gap-2 text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 rounded-lg transition-all duration-200'
 						onClick={() => handleSignIn('github')}
 					>
 						<FaGithub className='h-5 w-5' />

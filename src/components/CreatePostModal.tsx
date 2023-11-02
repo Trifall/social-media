@@ -2,6 +2,7 @@ import { Media } from '@/types/types';
 import { Dialog } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useUploadThing } from '@utils/uploadthing';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -10,7 +11,6 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 import { UploadFileResponse } from 'uploadthing/client';
 import { z } from 'zod';
-import { useUploadThing } from '@utils/uploadthing';
 import Button from './Button';
 import Modal from './Modal';
 import MultiUploader from './UploadBox';
@@ -159,17 +159,20 @@ const CreatePostModal = ({
 
 	return (
 		<Modal isOpen={createPostModalOpen} closeModal={() => setCreatePostModalOpen(false)}>
-			<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl bg-gray-700 p-6 text-left align-middle shadow-xl transition-all'>
+			<Dialog.Panel className='w-full transform overflow-hidden rounded-2xl dark:bg-primary-fg bg-light-primary-fg dark:text-white text-black p-6 text-left align-middle shadow-xl transition-all'>
 				{!user && (
 					<div className='flex flex-col items-center gap-3'>
 						<div className='p-2 rounded-full'>
 							<AiOutlinePlusSquare className='h-6 w-6 text-teal-300' />
 						</div>
-						<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+						<Dialog.Title as='h3' className='text-xl font-medium leading-6 dark:text-white text-black'>
 							You must be signed in to create a post.
 						</Dialog.Title>
 						<div>
-							<Button onClick={handleClose} className={`border-green-400 border-2 rounded-lg`}>
+							<Button
+								onClick={handleClose}
+								className={`text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+							>
 								Close
 							</Button>
 						</div>
@@ -178,26 +181,28 @@ const CreatePostModal = ({
 
 				{user && (
 					<form>
-						<div className='flex items-center gap-3'>
-							<div className='p-2 rounded-full'>
+						<div className='flex items-center'>
+							<div className='pl-4 p-2 rounded-full'>
 								<AiOutlinePlusSquare className='h-6 w-6 text-teal-300' />
 							</div>
-							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+							<Dialog.Title as='h3' className='text-xl font-bold leading-6 dark:text-white text-primary-bg'>
 								Create Post
 							</Dialog.Title>
 						</div>
 						<div className='mt-2'>
-							<p className='text-sm text-gray-200'>Fill out information for your post.</p>
+							<p className='text-sm dark:text-light-secondary-bg text-secondary-bg px-4'>
+								Fill out information for your post.
+							</p>
 						</div>
 						{/* <div className='w-full border-t border-gray-400 my-4' /> */}
 						<div className='mt-4 flex flex-col gap-4'>
-							<div className='px-4 py-2 gap-2 flex flex-col bg-gray-800 rounded-lg'>
-								<label>Post Content</label>
+							<div className='px-4 gap-2 flex flex-col dark:bg-primary-fg bg-light-primary-fg rounded-lg'>
+								<label className='font-medium dark:text-white text-black'>Post Content</label>
 								<textarea
 									disabled={isComplete || mutation.isSuccess || mutation.isPending || isUploading}
 									maxLength={500}
 									style={{ resize: 'none' }}
-									className='h-96'
+									className='h-96 p-2'
 									{...register('content')}
 								/>
 							</div>
@@ -218,7 +223,7 @@ const CreatePostModal = ({
 
 						<div className='mt-4 flex flex-col gap-4'>
 							<Button
-								className='flex items-center shadow-sm justify-center gap-2 border-white border hover:text-white hover:bg-gray-800 transition-all duration-300'
+								className='flex items-center shadow-sm justify-center gap-2 dark:border-white border-secondary-bg border hover:text-white hover:bg-secondary-hover dark:hover:bg-tertiary-hover transition-all duration-300'
 								onClick={handleSubmit(onSubmit)}
 								isLoading={(mutation.status === 'pending' || mutation.isPending || isUploading) && !isComplete}
 								isSuccess={mutation.isSuccess && isComplete}
@@ -228,7 +233,9 @@ const CreatePostModal = ({
 							</Button>
 							<Button
 								onClick={handleClose}
-								className={`py-1 ${mutation.isSuccess && `border-green-400 border-2 rounded-lg`}`}
+								className={`py-1 ${
+									mutation.isSuccess ? `border-green-400 border-2 rounded-lg` : `dark:border-white border-secondary-bg`
+								} flex items-center shadow-sm justify-center gap-2 border hover:text-white hover:bg-secondary-hover dark:hover:bg-tertiary-hover transition-all duration-300`}
 							>
 								Close
 							</Button>

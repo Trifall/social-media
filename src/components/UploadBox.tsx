@@ -3,6 +3,7 @@ import type { FileWithPath } from '@uploadthing/react';
 import { useDropzone } from '@uploadthing/react/hooks';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { FieldError } from 'react-hook-form';
+import { AiOutlineUpload } from 'react-icons/ai';
 import { generateClientDropzoneAccept } from 'uploadthing/client';
 
 type MultiUploaderProps = {
@@ -64,20 +65,19 @@ const MultiUploader = forwardRef((props: MultiUploaderProps, _ref) => {
 	// call startUpload with the files on form submit
 	return (
 		<div
-			className={`py-6 border-2 gap-4  ${error ? `border-red-500` : `border-blue-500`} ${
+			className={`py-4 border-2 gap-2  ${error ? `border-red-500` : `border-blue-500`} ${
 				disabled ? `hover:cursor-default opacity-50` : `hover:cursor-pointer`
 			} flex flex-col justify-center items-center`}
 			{...getRootProps()}
 		>
 			<input {...getInputProps()} />
-			File dropzone
-			<div className=''>
-				{files.length > 0 && (
-					<span className={`bg-blue-600 p-2 rounded-sm`}>
-						{files.length} file{files.length > 1 ? 's' : ''} queued
-					</span>
-				)}
-			</div>
+			<span>Upload Media</span>
+			<AiOutlineUpload className='h-6 w-6' />
+			{files.length > 0 && (
+				<span className={`bg-blue-600 p-2 rounded-sm text-white `}>
+					{files.length} File{files.length > 1 ? 's' : ''} Queued
+				</span>
+			)}
 			{error?.message && <span className='text-red-400'>{error.message}</span>}
 		</div>
 	);
