@@ -4,13 +4,15 @@ import CommentsModal from '@components/CommentsModal';
 import PostCard from '@components/PostCard';
 import { db } from '@utils/dbClient';
 import { GetServerSidePropsContext } from 'next';
-import { useSession } from 'next-auth/react';
+import { Session, getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 type PostPageProps = {
 	post?: Post;
 	liked_posts?: LikedPost[];
+	newSession?: Session;
 };
 
 async function getPost(post_id: number) {
@@ -51,12 +53,13 @@ async function getPost(post_id: number) {
 	return postResponse as unknown as Post;
 }
 
-export default function PostPage({ post }: PostPageProps) {
+export default function PostPage({ post, newSession }: PostPageProps) {
 	const [commentModalOpen, setCommentModalOpen] = useState(false);
 	// auth hook
-	const session = useSession();
 	// get user object
-	const user = session?.data?.user;
+	const user = newSession?.user;
+
+	console.log(`[postpage/user] ${JSON.stringify(user, null, 2)}`);
 
 	// sort comments by likes, and then by date if likes are equal
 	const comments = useMemo(() => {
@@ -101,7 +104,7 @@ export default function PostPage({ post }: PostPageProps) {
 	);
 }
 
-export const getServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+export const getServerSideProps = async ({ params, req, res }: GetServerSidePropsContext) => {
 	console.log(`[gSSP/getPost] params: ${JSON.stringify(params, null, 2)}`);
 
 	if (!params?.id) {
@@ -132,7 +135,11 @@ export const getServerSideProps = async ({ params }: GetServerSidePropsContext) 
 		};
 	}
 
+	const sessionResponse = await getServerSession(req, res, authOptions);
+
+	console.log(`server session: ${JSON.stringify(sessionResponse, null, 2)}`);
+
 	return {
-		props: { post: postData },
+		props: { newSession: sessionResponse, post: postData },
 	};
 };
