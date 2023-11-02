@@ -54,7 +54,7 @@ export default function Home({ posts }: HomeProps) {
 			</Head>
 			<main className='flex items-center justify-center bg-inherit'>
 				<CreatePostModal createPostModalOpen={createPostModalOpen} setCreatePostModalOpen={setCreatePostModalOpen} />
-				<div className='flex w-screen items-center justify-center lg:mb-0 lg:text-left'>
+				<div className='flex w-full items-center justify-center lg:mb-0 lg:text-left'>
 					<div className='relative flex flex-col items-center overflow-y-scroll no-scrollbar'>
 						<Button
 							className='w-48 items-center rounded-lg dark:hover:bg-secondary-hover dark:bg-secondary-bg  hover:bg-secondary-hover dark:text-white bg-light-primary-fg border-2 border-secondary-bg text-black px-4 py-3 mb-4 transition-all duration-500 lg:px-3 lg:py-2'
