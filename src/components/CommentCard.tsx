@@ -255,7 +255,7 @@ const CommentPopover = ({ comment, user }: { comment: Comment; user?: Session['u
 				shouldCloseOnOverlayClick={!isDeleteLoading}
 				skipExitAnimation
 			>
-				<Dialog.Panel className='w-3/4 transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
+				<Dialog.Panel className='max-w-3/4 w-3/4 transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all dark:bg-secondary-bg bg-light-secondary-bg'>
 					{!user ? (
 						<div className='flex flex-col items-center gap-3'>
 							<div className='p-2 rounded-full'>
@@ -297,14 +297,14 @@ const CommentPopover = ({ comment, user }: { comment: Comment; user?: Session['u
 									</span>
 								)}
 							</Dialog.Title>
-							<div className='flex gap-2'>
+							<div className='flex gap-2 justify-center items-center w-full m:w-fit'>
 								<Button
 									onClick={handleConfirmDelete}
 									isDisabled={isDeleteLoading || isRequestComplete}
 									isLoading={isDeleteLoading || deleteMutation.status === 'pending'}
 									isSuccess={deleteMutation.status === 'success'}
 									isError={deleteMutation.status === 'error'}
-									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+									className={`text-primary-fg bg-red-500 hover:bg-red-400 border-secondary-bg border-2 w-2/4 md:w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
 									{isDeleteLoading
 										? 'Deleting...'
@@ -315,7 +315,7 @@ const CommentPopover = ({ comment, user }: { comment: Comment; user?: Session['u
 								<Button
 									onClick={handleClose}
 									isDisabled={isDeleteLoading || isRequestComplete}
-									className={` text-black dark:text-white dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 w-36 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
+									className={` text-black dark:text-white w-2/4 md:w-36 dark:hover:bg-tertiary-hover hover:bg-secondary-hover dark:border-tertiary-hover border-secondary-bg border-2 rounded-lg justify-center flex flex-row gap-2 items-center transition-all duration-200`}
 								>
 									No
 								</Button>
