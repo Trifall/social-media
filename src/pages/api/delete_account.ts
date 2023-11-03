@@ -1,9 +1,9 @@
+import { users } from '@drizzle/schema';
+import { db } from '@utils/dbClient';
 import { eq } from 'drizzle-orm';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
-import { users } from '@drizzle/schema';
-import { db } from '@utils/dbClient';
 import { authOptions } from './auth/[...nextauth]';
 
 const deleteAccountSchema = z.object({
@@ -16,7 +16,7 @@ export type DeleteAccountRequestData = z.infer<typeof deleteAccountSchema>;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
+	if (!session || !session.user.id) {
 		return res.status(401).send({
 			message: 'Not Authorized',
 		});

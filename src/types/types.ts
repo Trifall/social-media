@@ -63,3 +63,5 @@ export type LikedPost = {
 	post_id: number;
 	timestamp: Date;
 };
+
+export const ADMIN_USER_ID_LIST = ['113193884', '13270623'];

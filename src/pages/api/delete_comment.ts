@@ -1,4 +1,4 @@
-import { deleteCommentSchema } from '@/types/types';
+import { ADMIN_USER_ID_LIST, deleteCommentSchema } from '@/types/types';
 import { db } from '@/utils/dbClient';
 import { comments } from '@drizzle/schema';
 import { eq } from 'drizzle-orm';
@@ -8,7 +8,7 @@ import { authOptions } from './auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
+	if (!session || !session.user.id) {
 		return res.status(401).send({
 			message: 'Not Authorized',
 		});
@@ -35,9 +35,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	if (parsed.data.user_id !== session.user.id) {
-		return res.status(401).send({
-			message: 'Not Authorized',
-		});
+		if (ADMIN_USER_ID_LIST.indexOf(session.user.id) === -1) {
+			return res.status(401).send({
+				message: 'Not Authorized',
+			});
+		}
 	}
 
 	console.log(`[API/Delete Comment] parsed input: ${JSON.stringify(parsed, null, 2)}`);

@@ -70,3 +70,21 @@ export const commentRelations = relations(comments, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const banned_users = sqliteTable(
+	'banned_users',
+	{
+		id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+		user_id: text('user_id').notNull(),
+	},
+	(banned_user) => ({
+		banned_usersIdx: index('banned_usersIdx').on(banned_user.user_id),
+	})
+);
+
+export const bannedUsersRelations = relations(banned_users, ({ one }) => ({
+	users: one(users, {
+		fields: [banned_users.user_id],
+		references: [users.id],
+	}),
+}));

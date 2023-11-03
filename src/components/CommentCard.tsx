@@ -1,4 +1,4 @@
-import type { Comment, DeleteCommentData, LikePostData } from '@/types/types';
+import { ADMIN_USER_ID_LIST, type Comment, type DeleteCommentData, type LikePostData } from '@/types/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -210,7 +210,7 @@ const CommentPopover = ({ comment, user }: { comment: Comment; user?: Session['u
 
 	if (!comment) return null;
 	if (!user) return null;
-	if (user.id !== comment.user_id) return null;
+	if (user.id !== comment.user_id && ADMIN_USER_ID_LIST.indexOf(comment.user_id) === -1) return null;
 
 	return (
 		<div className='relative'>

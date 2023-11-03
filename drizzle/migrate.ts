@@ -1,7 +1,10 @@
 import { createClient } from '@libsql/client';
-import 'dotenv/config.js';
+import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/libsql';
 import { migrate } from 'drizzle-orm/libsql/migrator';
+
+console.log(`process.env.TURSO_DB_URL: ${process.env.TURSO_DB_URL}`);
+console.log(`process.env.TURSO_DB_AUTH_TOKEN: ${process.env.TURSO_DB_AUTH_TOKEN}`);
 
 const client = createClient({
 	url: process.env.TURSO_DB_URL as string,

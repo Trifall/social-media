@@ -1,48 +1,55 @@
 {
-	"version": "5",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1697751236255,
-			"tag": "0000_parallel_prodigy",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "5",
-			"when": 1697830401182,
-			"tag": "0001_solid_harrier",
-			"breakpoints": true
-		},
-		{
-			"idx": 2,
-			"version": "5",
-			"when": 1697831679663,
-			"tag": "0002_chief_calypso",
-			"breakpoints": true
-		},
-		{
-			"idx": 3,
-			"version": "5",
-			"when": 1698274212304,
-			"tag": "0003_reflective_war_machine",
-			"breakpoints": true
-		},
-		{
-			"idx": 4,
-			"version": "5",
-			"when": 1698689883917,
-			"tag": "0004_faulty_kingpin",
-			"breakpoints": true
-		},
-		{
-			"idx": 5,
-			"version": "5",
-			"when": 1698691440972,
-			"tag": "0005_flippant_snowbird",
-			"breakpoints": true
-		}
-	]
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1697751236255,
+      "tag": "0000_parallel_prodigy",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1697830401182,
+      "tag": "0001_solid_harrier",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697831679663,
+      "tag": "0002_chief_calypso",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1698274212304,
+      "tag": "0003_reflective_war_machine",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1698689883917,
+      "tag": "0004_faulty_kingpin",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1698691440972,
+      "tag": "0005_flippant_snowbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1699052459690,
+      "tag": "0006_lucky_next_avengers",
+      "breakpoints": true
+    }
+  ]
 }

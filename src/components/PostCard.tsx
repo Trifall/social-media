@@ -1,4 +1,4 @@
-import type { DeletePostData, LikePostData, Post } from '@/types/types';
+import { ADMIN_USER_ID_LIST, type DeletePostData, type LikePostData, type Post } from '@/types/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -273,7 +273,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 
 	if (!post) return null;
 	if (!user) return null;
-	if (user.id !== post.user_id) return null;
+	if (user.id !== post.user_id && ADMIN_USER_ID_LIST.indexOf(user.id) === -1) return null;
 
 	return (
 		<div className='relative'>
