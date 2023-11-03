@@ -129,24 +129,26 @@ const CommentCard = ({ comment, user }: CommentCardProps) => {
 						<AiOutlineUser className='h-8 w-8 p-0 m-0 rounded-full' />
 					)}
 				</div>
-				<div className='max-w-[94%]'>
-					<div className='flex flex-col gap-1'>
-						<div className='flex flex-row items-center gap-2 justify-between'>
-							<div className='font-bold'>{comment.users?.name ? comment.users?.name : 'Unknown User'}</div>
-							<div className='text-gray-500'>{dateString}</div>
-						</div>
-						<div>{comment.content}</div>
-					</div>
+				<div className='flex flex-row items-center gap-2 justify-between'>
+					<div className='font-bold'>{comment.users?.name ? comment.users?.name : 'Unknown User'}</div>
 				</div>
 			</div>
-			<div className='flex flex-row gap-1'>
-				<LikeButton
-					key={comment.id}
-					onClick={handleLikeButtonClicked}
-					isDisabled={isLoading || mutation?.isPending}
-					isLiked={isLiked}
-				/>
-				<span className='opacity-75 pt-1'>{likesCount > 0 ? likesCount : ''}</span>
+			<div className=''>
+				<div className='flex flex-col gap-1'>
+					<div>{comment.content}</div>
+				</div>
+			</div>
+			<div className='flex flex-row justify-between'>
+				<div className='flex'>
+					<LikeButton
+						key={comment.id}
+						onClick={handleLikeButtonClicked}
+						isDisabled={isLoading || mutation?.isPending}
+						isLiked={isLiked}
+					/>
+					<span className='opacity-75 pt-1'>{likesCount > 0 ? likesCount : ''}</span>
+				</div>
+				<div className='text-gray-500 md:text-[12px] text-[10px] flex justify-center items-center'>{dateString}</div>
 			</div>
 		</div>
 	);
@@ -212,7 +214,7 @@ const CommentPopover = ({ comment, user }: { comment: Comment; user?: Session['u
 
 	return (
 		<div className='relative'>
-			<Popover className='absolute right-0 top-0 hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
+			<Popover className='absolute right-0 hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
 				{() => (
 					<>
 						<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>

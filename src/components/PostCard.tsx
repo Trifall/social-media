@@ -277,7 +277,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 
 	return (
 		<div className='relative'>
-			<Popover className='absolute right-0 top-0 hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
+			<Popover className='absolute right-3 top-3 hover:bg-secondary-hover rounded-lg p-2 transition-all duration-500'>
 				{() => (
 					<>
 						<Popover.Button className='flex items-center gap-2 outline-none text-black dark:text-white'>
