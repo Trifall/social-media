@@ -135,7 +135,7 @@ const AccountPage = () => {
 							<div className='p-2 rounded-full'>
 								<AiFillWarning className='h-10 w-10 text-red-600' />
 							</div>
-							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white text-center'>
 								<span className='dark:text-white text-black'>
 									Are you sure you want to <span className='text-red-500 font-bold'>delete</span> your account? This
 									action is <span className='text-red-500 font-bold'>irreversible</span>.

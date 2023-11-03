@@ -43,6 +43,13 @@ export const deletePostSchema = z.object({
 
 export type DeletePostData = z.infer<typeof deletePostSchema>;
 
+export const deleteCommentSchema = z.object({
+	user_id: z.string(),
+	comment_id: z.number(),
+});
+
+export type DeleteCommentData = z.infer<typeof deleteCommentSchema>;
+
 export const likePostSchema = z.object({
 	post_id: z.number().int(),
 	user_id: z.string(),

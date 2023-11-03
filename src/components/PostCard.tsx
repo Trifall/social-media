@@ -1,4 +1,3 @@
-import { DeleteAccountPostData } from '@/pages/account';
 import type { DeletePostData, LikePostData, Post } from '@/types/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { useMutation } from '@tanstack/react-query';
@@ -226,7 +225,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 	const router = useRouter();
 
 	const deleteMutation = useMutation({
-		mutationFn: (data: DeleteAccountPostData) => {
+		mutationFn: (data: DeletePostData) => {
 			return axios.post('/api/delete_post', data);
 		},
 		onSuccess: () => {
@@ -346,7 +345,7 @@ const PostPopover = ({ post, user }: { post: Post; user?: Session['user'] }) => 
 									<AiFillWarning className='h-10 w-10 text-red-600' />
 								)}
 							</div>
-							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white'>
+							<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-white text-center'>
 								{isRequestComplete && deleteMutation.isSuccess ? (
 									<span className='text-green-500 font-bold'>Post deleted successfully!</span>
 								) : deleteMutation.isError ? (
