@@ -1,20 +1,23 @@
 # Social Media Site
 
-## About
+## Overview
 
-This is a mock social media site built by [Jerren Trifan](https://trifall.com) and [Dolan Reynolds](https://dolan.dev).
+This is a mock social media site built by [Jerren Trifan](https://trifall.com) and [Dolan Reynolds](https://dolan.dev). It is similar in nature to a twitter style feed, with comments / likes / media features.
 
 A working demo is accessible at [social.trifall.com](https://social.trifall.com/)
 
-## Tech Stack
+## Technologies Used
 
 - Next.js 13 (Pages Router)
-- React
-- Tailwind CSS
+- React 18
+- TailwindCSS
+- HeadlessUI
 - Turso (SQLite) Database
 - Drizzle (ORM)
 - Next-Auth
 - UploadThing
+- Zod
+- React-Hook-Form
 
 ## Getting Started
 
@@ -57,6 +60,11 @@ then
 
 ```bash
 yarn migrate
+```
+
+Compile a production build:
+```
+yarn build
 ```
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
