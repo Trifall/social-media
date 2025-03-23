@@ -2,7 +2,7 @@ module.exports = {
 	apps: [
 		{
 			name: 'social-media',
-			script: 'yarn',
+			script: 'pnpm',
 			args: 'start -p 3030',
 			autorestart: true,
 			watch: './next',
