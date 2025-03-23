@@ -16,11 +16,11 @@
 	],
 	"scripts": {
 		"dev": "next dev",
-		"build": "yarn install && next build",
+		"build": "pnpm install && next build",
 		"start": "next start",
 		"lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --cache --fix --ignore-path ./.gitignore",
 		"format": "prettier --ignore-path .gitignore --log-level warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
-		"pipeline": "yarn install && yarn format && yarn lint && next build",
+		"pipeline": "pnpm install && pnpm format && pnpm lint && next build",
 		"prepare": "husky install",
 		"generate": "drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
 		"migrate": "tsx drizzle/migrate",
@@ -38,8 +38,8 @@
 		"axios": "^1.5.1",
 		"drizzle-orm": "^0.28.6",
 		"framer-motion": "^10.16.4",
-		"next": "^13.5.6",
-		"next-auth": "^4.24.3",
+		"next": "^13.5.9",
+		"next-auth": "^4.24.11",
 		"next-themes": "^0.2.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
@@ -71,5 +71,12 @@
 		"tsx": "^3.14.0",
 		"typescript": "5.2.2"
 	},
-	"packageManager": "yarn@1.22.19"
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"better-sqlite3",
+			"es5-ext",
+			"esbuild",
+			"sharp"
+		]
+	}
 }
